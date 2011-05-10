@@ -1,0 +1,46 @@
+Cabal-version:          >= 1.6
+Name:                   upskirt
+Version:                0.0.2
+Author:                 Francesco Mazzoli (f@mazzo.li)
+Maintainer:             Francesco Mazzoli (f@mazzo.li)
+Build-Type:             Simple
+License:                PublicDomain
+Build-Type:             Simple
+Category:               Foreign binding, Text
+Synopsis:               Binding to upskirt
+Tested-With:            GHC==7.0.2
+Description:
+  Bindings to the github fork of upskirt, a nice C markdown library:
+  <https://github.com/tanoku/upskirt>
+
+source-repository head
+  type:     git
+  location: git://github.com/rostayob/upskirt.git
+
+Library
+  Hs-Source-Dirs:       src
+
+  Build-Depends:        base >= 3 && < 5
+                      , bytestring
+
+  GHC-Options:          -Wall -O2
+  
+  Extensions:           ForeignFunctionInterface, EmptyDataDecls
+  
+  Exposed-Modules:      Text.Upskirt
+                      , Text.Upskirt.Markdown
+                      , Text.Upskirt.Renderers.Xhtml
+
+  Other-Modules:        Text.Upskirt.Buffer.Foreign
+                      , Text.Upskirt.Renderers.Xhtml.Foreign
+                      , Text.Upskirt.Flag
+                      , Text.Upskirt.Markdown.Foreign
+  
+  C-Sources:            cbits/array.c, cbits/buffer.c, cbits/markdown.c,
+                        cbits/xhtml.c, cbits/xhtml_smartypants.c
+  
+  Include-Dirs:         cbits
+  
+  Includes:             array.h, buffer.h, markdown.h, xhtml.h
+  
+  Install-includes:     array.h, buffer.h, markdown.h, xhtml.h

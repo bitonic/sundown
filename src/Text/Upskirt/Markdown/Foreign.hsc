@@ -1,28 +1,28 @@
 {-# Language ForeignFunctionInterface #-}
 
-module Text.Upskirt.Markdown
+module Text.Upskirt.Markdown.Foreign
        ( Renderer
        , Extensions (..)
-       , allExtensions
        , c_ups_markdown
        ) where
 
 import Foreign
 import Foreign.C.Types
 
-import Text.Upskirt.Buffer
+import Text.Upskirt.Buffer.Foreign
 import Text.Upskirt.Flag
 
 #include "markdown.h"
 
 data Renderer
 
+-- | A set of switches to enable or disable markdown features.
 data Extensions = Extensions { extNoIntraEmphasis :: Bool
-                             , extTables :: Bool
-                             , extFencedCode :: Bool
-                             , extAutolink :: Bool
-                             , extStrikethrough :: Bool
-                             , extLaxHtmlBlocks :: Bool
+                             , extTables          :: Bool
+                             , extFencedCode      :: Bool
+                             , extAutolink        :: Bool
+                             , extStrikethrough   :: Bool
+                             , extLaxHtmlBlocks   :: Bool
                              }
 
 instance Flag Extensions where
@@ -34,8 +34,6 @@ instance Flag Extensions where
                      , (5, extLaxHtmlBlocks exts)
                      ]
 
-
-allExtensions = Extensions True True True True True True
 
 
 instance Storable Renderer where

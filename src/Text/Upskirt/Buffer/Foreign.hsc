@@ -1,6 +1,6 @@
 {-# Language ForeignFunctionInterface #-}
 
-module Text.Upskirt.Buffer
+module Text.Upskirt.Buffer.Foreign
        ( Buffer (..)
        , c_bufnew
        , c_bufputs

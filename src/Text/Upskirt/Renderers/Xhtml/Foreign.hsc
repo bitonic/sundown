@@ -1,19 +1,19 @@
 {-# Language ForeignFunctionInterface #-}
 
-module Text.Upskirt.Renderers.Xhtml
-       ( renderHtml
-       , XhtmlRenderMode (..)
+module Text.Upskirt.Renderers.Xhtml.Foreign
+       ( XhtmlRenderMode (..)
+       , c_ups_xhtml_renderer
+       , c_ups_toc_renderer
+       , c_ups_free_renderer
+       , c_ups_xhtml_smartypants
        ) where
+
 
 import Foreign
 import Foreign.C.Types
 
-import Data.ByteString (ByteString)
-
-import System.IO.Unsafe
-
-import Text.Upskirt.Buffer
-import Text.Upskirt.Markdown
+import Text.Upskirt.Buffer.Foreign
+import Text.Upskirt.Markdown.Foreign
 import Text.Upskirt.Flag
 
 
@@ -27,6 +27,7 @@ data XhtmlRenderMode = XhtmlRenderMode { xhtmlSkipHtml :: Bool
                                        , xhtmlHardWrap :: Bool
                                        , xhtmlGithubBlockcode :: Bool
                                        }
+
 
 instance Flag XhtmlRenderMode where
   flagIndexes mode = [ (0,  xhtmlSkipHtml mode)
@@ -54,27 +55,3 @@ foreign import ccall "xhtml.h ups_free_renderer"
 
 foreign import ccall "xhtml.h ups_xhtml_smartypants"
   c_ups_xhtml_smartypants :: Ptr Buffer -> Ptr Buffer -> IO ()
-
-renderHtml :: ByteString -> Extensions -> XhtmlRenderMode -> ByteString
-renderHtml input exts mode =
-  unsafePerformIO $
-  alloca $ \renderer -> do
-    -- Allocate buffers
-    ob <- c_bufnew 64
-    ib <- c_bufnew 1024
-    
-    -- Put the input content into the buffer
-    c_bufputs ib input
-    
-    -- Do the markdown
-    c_ups_xhtml_renderer renderer mode
-    c_ups_markdown ob ib renderer exts
-    c_ups_free_renderer renderer
-    
-    -- Get the result
-    Buffer {bufData = output} <- peek ob
-    
-    c_bufrelease ib
-    c_bufrelease ob
-    
-    return output

@@ -1,6 +1,6 @@
 Cabal-version:          >= 1.6
 Name:                   upskirt
-Version:                0.0.2
+Version:                0.0.3
 Author:                 Francesco Mazzoli (f@mazzo.li)
 Maintainer:             Francesco Mazzoli (f@mazzo.li)
 Build-Type:             Simple
@@ -29,18 +29,18 @@ Library
   
   Exposed-Modules:      Text.Upskirt
                       , Text.Upskirt.Markdown
-                      , Text.Upskirt.Renderers.Xhtml
+                      , Text.Upskirt.Renderers.Html
 
   Other-Modules:        Text.Upskirt.Buffer.Foreign
-                      , Text.Upskirt.Renderers.Xhtml.Foreign
+                      , Text.Upskirt.Renderers.Html.Foreign
                       , Text.Upskirt.Flag
                       , Text.Upskirt.Markdown.Foreign
   
   C-Sources:            cbits/array.c, cbits/buffer.c, cbits/markdown.c,
-                        cbits/xhtml.c, cbits/xhtml_smartypants.c
+                        cbits/html.c, cbits/html_smartypants.c
   
   Include-Dirs:         cbits
   
-  Includes:             array.h, buffer.h, markdown.h, xhtml.h
+  Includes:             array.h, buffer.h, markdown.h, html.h
   
-  Install-includes:     array.h, buffer.h, markdown.h, xhtml.h
+  Install-includes:     array.h, buffer.h, markdown.h, html.h

@@ -1,11 +1,11 @@
 {-# Language ForeignFunctionInterface #-}
 
-module Text.Upskirt.Renderers.Xhtml
+module Text.Upskirt.Renderers.Html
        ( renderHtml
-       , noXhtmlModes
-       , allXhtmlModes
+       , noHtmlModes
+       , allHtmlModes
        , smartypants
-       , XhtmlRenderMode (..)
+       , HtmlRenderMode (..)
        ) where
 
 
@@ -16,12 +16,12 @@ import qualified Data.ByteString as BS
 
 import Text.Upskirt.Markdown.Foreign
 import Text.Upskirt.Buffer.Foreign
-import Text.Upskirt.Renderers.Xhtml.Foreign
+import Text.Upskirt.Renderers.Html.Foreign
 
 
--- | Parses a 'ByteString' containing the markdown, returns the Xhtml
+-- | Parses a 'ByteString' containing the markdown, returns the Html
 -- code.
-renderHtml :: ByteString -> Extensions -> XhtmlRenderMode -> ByteString
+renderHtml :: ByteString -> Extensions -> HtmlRenderMode -> ByteString
 renderHtml input exts mode =
   unsafePerformIO $
   alloca $ \renderer -> do
@@ -33,9 +33,9 @@ renderHtml input exts mode =
     c_bufputs ib input
     
     -- Do the markdown
-    c_ups_xhtml_renderer renderer mode
+    c_upshtml_renderer renderer mode
     c_ups_markdown ob ib renderer exts
-    c_ups_free_renderer renderer
+    c_upshtml_free_renderer renderer
     
     -- Get the result
     Buffer {bufData = output} <- peek ob
@@ -46,13 +46,13 @@ renderHtml input exts mode =
     return output
 
 
--- | All the 'XhtmlRenderMode' disabled
-noXhtmlModes :: XhtmlRenderMode
-noXhtmlModes = XhtmlRenderMode False False False False False False False False False
+-- | All the 'HtmlRenderMode' disabled
+noHtmlModes :: HtmlRenderMode
+noHtmlModes = HtmlRenderMode False False False False False False False False False False
 
--- | All the 'XhtmlRenderMode' enabled
-allXhtmlModes :: XhtmlRenderMode
-allXhtmlModes = XhtmlRenderMode True True True True True True True True True
+-- | All the 'HtmlRenderMode' enabled
+allHtmlModes :: HtmlRenderMode
+allHtmlModes = HtmlRenderMode True True True True True True True True True True
 
 -- | Converts punctuation in Html entities,
 -- <http://daringfireball.net/projects/smartypants/>
@@ -64,7 +64,7 @@ smartypants input =
     
     c_bufputs ib input
     
-    c_ups_xhtml_smartypants ob ib
+    c_upshtml_smartypants ob ib
     
     Buffer {bufData = output} <- peek ob
     

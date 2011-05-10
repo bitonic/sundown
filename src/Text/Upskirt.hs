@@ -6,7 +6,7 @@ Bindings to the github fork of the upskirt library:
 Example usage:
 
 > import Text.Upskirt
-> import Text.Upskirt.Renderers.Xhtml
+> import Text.Upskirt.Renderers.Html
 > import qualified Data.ByteString as BS
 > import qualified Data.ByteString.UTF8 as UTF8
 > import System (getArgs)
@@ -15,7 +15,7 @@ Example usage:
 > main :: IO ()
 > main = do
 >   input <- liftM (!! 0) getArgs >>= BS.readFile
->   putStrLn $ UTF8.toString $ renderHtml input allExtensions noXhtmlModes
+>   putStrLn $ UTF8.toString $ renderHtml input allExtensions noHtmlModes
 
 -}
 

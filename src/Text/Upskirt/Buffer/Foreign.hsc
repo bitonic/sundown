@@ -36,12 +36,7 @@ instance Storable Buffer where
     u  <- (#peek struct buf, unit) ptr
     r  <- (#peek struct buf, ref) ptr
     return $ Buffer dbs s as u r
-  poke ptr (Buffer dbs s as u r) = BS.useAsCString dbs $ \d -> do
-    (#poke struct buf, data) ptr d
-    (#poke struct buf, size) ptr s
-    (#poke struct buf, asize) ptr as
-    (#poke struct buf, unit) ptr u
-    (#poke struct buf, ref) ptr r
+  poke _ _ = error "Buffer.poke not implemented."
 
 foreign import ccall "buffer.h bufnew"
   c_bufnew :: CSize -> IO (Ptr Buffer)

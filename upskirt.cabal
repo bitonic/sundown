@@ -37,10 +37,11 @@ Library
                       , Text.Upskirt.Markdown.Foreign
   
   C-Sources:            cbits/array.c, cbits/buffer.c, cbits/markdown.c,
-                        cbits/html.c, cbits/html_smartypants.c
+                        cbits/html.c, cbits/html_smartypants.c,
+                        cbits/autolink.c
   
   Include-Dirs:         cbits
   
-  Includes:             array.h, buffer.h, markdown.h, html.h
+  Includes:             array.h, autolink.h, buffer.h, markdown.h, html.h
   
-  Install-includes:     array.h, buffer.h, markdown.h, html.h
+  Install-includes:     array.h, autolink.h, buffer.h, markdown.h, html.h

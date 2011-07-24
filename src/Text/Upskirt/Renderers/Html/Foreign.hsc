@@ -2,10 +2,10 @@
 
 module Text.Upskirt.Renderers.Html.Foreign
        ( HtmlRenderMode (..)
-       , c_upshtml_renderer
-       , c_upshtml_toc_renderer
-       , c_upshtml_free_renderer
-       , c_upshtml_smartypants
+       , c_sdhtml_renderer
+       , c_sdhtml_toc_renderer
+       , c_sdhtml_free_renderer
+       , c_sdhtml_smartypants
        ) where
 
 
@@ -44,16 +44,16 @@ instance Flag HtmlRenderMode where
                      ]
 
 
-c_upshtml_renderer :: Ptr Renderer -> HtmlRenderMode -> IO ()
-c_upshtml_renderer rndr mode = c_upshtml_renderer' rndr (toCUInt mode)
-foreign import ccall "html.h upshtml_renderer"
-  c_upshtml_renderer' :: Ptr Renderer -> CUInt -> IO ()
+c_sdhtml_renderer :: Ptr Renderer -> HtmlRenderMode -> IO ()
+c_sdhtml_renderer rndr mode = c_sdhtml_renderer' rndr (toCUInt mode)
+foreign import ccall "html.h sdhtml_renderer"
+  c_sdhtml_renderer' :: Ptr Renderer -> CUInt -> IO ()
 
-foreign import ccall "html.h upshtml_toc_renderer"
-  c_upshtml_toc_renderer :: Ptr Renderer -> IO ()
+foreign import ccall "html.h sdhtml_toc_renderer"
+  c_sdhtml_toc_renderer :: Ptr Renderer -> IO ()
 
-foreign import ccall "html.h upshtml_free_renderer"
-  c_upshtml_free_renderer :: Ptr Renderer -> IO ()
+foreign import ccall "html.h sdhtml_free_renderer"
+  c_sdhtml_free_renderer :: Ptr Renderer -> IO ()
 
-foreign import ccall "html.h upshtml_smartypants"
-  c_upshtml_smartypants :: Ptr Buffer -> Ptr Buffer -> IO ()
+foreign import ccall "html.h sdhtml_smartypants"
+  c_sdhtml_smartypants :: Ptr Buffer -> Ptr Buffer -> IO ()

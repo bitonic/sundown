@@ -3,7 +3,7 @@
 module Text.Upskirt.Markdown.Foreign
        ( Renderer
        , Extensions (..)
-       , c_ups_markdown
+       , c_sd_markdown
        ) where
 
 import Foreign
@@ -42,7 +42,7 @@ instance Storable Renderer where
     peek _ = error "Renderer.peek is not implemented"
     poke _ _ = error "Renderer.poke is not implemented"
 
-c_ups_markdown :: Ptr Buffer -> Ptr Buffer -> Ptr Renderer -> Extensions -> IO ()
-c_ups_markdown ob ib rndr exts = c_ups_markdown' ob ib rndr (toCUInt exts)
-foreign import ccall "markdown.h ups_markdown"
-  c_ups_markdown' :: Ptr Buffer -> Ptr Buffer -> Ptr Renderer -> CUInt -> IO ()
+c_sd_markdown :: Ptr Buffer -> Ptr Buffer -> Ptr Renderer -> Extensions -> IO ()
+c_sd_markdown ob ib rndr exts = c_sd_markdown' ob ib rndr (toCUInt exts)
+foreign import ccall "markdown.h sd_markdown"
+  c_sd_markdown' :: Ptr Buffer -> Ptr Buffer -> Ptr Renderer -> CUInt -> IO ()

@@ -33,9 +33,9 @@ renderHtml input exts mode =
     c_bufputs ib input
     
     -- Do the markdown
-    c_upshtml_renderer renderer mode
-    c_ups_markdown ob ib renderer exts
-    c_upshtml_free_renderer renderer
+    c_sdhtml_renderer renderer mode
+    c_sd_markdown ob ib renderer exts
+    c_sdhtml_free_renderer renderer
     
     -- Get the result
     Buffer {bufData = output} <- peek ob
@@ -64,7 +64,7 @@ smartypants input =
     
     c_bufputs ib input
     
-    c_upshtml_smartypants ob ib
+    c_sdhtml_smartypants ob ib
     
     Buffer {bufData = output} <- peek ob
     

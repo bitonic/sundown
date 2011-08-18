@@ -1,6 +1,6 @@
 Cabal-version:          >= 1.6
 Name:                   sundown
-Version:                0.1
+Version:                0.1.1
 Author:                 Francesco Mazzoli (f@mazzo.li)
 Maintainer:             Francesco Mazzoli (f@mazzo.li)
 Build-Type:             Simple
@@ -23,7 +23,7 @@ Library
   Build-Depends:        base >= 3 && < 5
                       , bytestring
 
-  GHC-Options:          -Wall -O2 -threaded -fno-cse
+  GHC-Options:          -Wall -O2 -fno-cse
   
   Extensions:           ForeignFunctionInterface, EmptyDataDecls
   

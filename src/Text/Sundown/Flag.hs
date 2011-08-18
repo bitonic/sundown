@@ -1,4 +1,4 @@
-module Text.Upskirt.Flag
+module Text.Sundown.Flag
        ( Flag (..)
        , toCUInt
        ) where

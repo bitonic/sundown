@@ -1,10 +1,10 @@
-module Text.Upskirt.Markdown
+module Text.Sundown.Markdown
        ( Extensions (..)
        , allExtensions
        , noExtensions
        ) where
 
-import Text.Upskirt.Markdown.Foreign
+import Text.Sundown.Markdown.Foreign
 
 -- | All 'Extensions' disabled
 noExtensions :: Extensions

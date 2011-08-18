@@ -1,12 +1,12 @@
 {-|
 
-Bindings to the github fork of the upskirt library:
-<https://github.com/tanoku/upskirt>
+Bindings to the github fork of the sundown library - previously known as upskirt:
+<https://github.com/tanoku/sundown>
 
 Example usage:
 
-> import Text.Upskirt
-> import Text.Upskirt.Renderers.Html
+> import Text.Sundown
+> import Text.Sundown.Renderers.Html
 > import qualified Data.ByteString as BS
 > import qualified Data.ByteString.UTF8 as UTF8
 > import System (getArgs)
@@ -19,11 +19,11 @@ Example usage:
 
 -}
 
-module Text.Upskirt
-       ( module Text.Upskirt.Markdown
+module Text.Sundown
+       ( module Text.Sundown.Markdown
        ) where
 
-import Text.Upskirt.Markdown
+import Text.Sundown.Markdown
 
 
 

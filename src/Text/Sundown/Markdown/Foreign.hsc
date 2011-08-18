@@ -1,7 +1,7 @@
 {-# Language ForeignFunctionInterface #-}
 
-module Text.Upskirt.Markdown.Foreign
-       ( Renderer
+module Text.Sundown.Markdown.Foreign
+       ( Callbacks
        , Extensions (..)
        , c_sd_markdown
        ) where
@@ -9,12 +9,12 @@ module Text.Upskirt.Markdown.Foreign
 import Foreign
 import Foreign.C.Types
 
-import Text.Upskirt.Buffer.Foreign
-import Text.Upskirt.Flag
+import Text.Sundown.Buffer.Foreign
+import Text.Sundown.Flag
 
 #include "markdown.h"
 
-data Renderer
+data Callbacks
 
 -- | A set of switches to enable or disable markdown features.
 data Extensions = Extensions { extNoIntraEmphasis :: Bool
@@ -36,13 +36,13 @@ instance Flag Extensions where
 
 
 
-instance Storable Renderer where
-    sizeOf _ = (#size struct mkd_renderer)
+instance Storable Callbacks where
+    sizeOf _ = (#size struct sd_callbacks)
     alignment _ = alignment (undefined :: Ptr ())
-    peek _ = error "Renderer.peek is not implemented"
-    poke _ _ = error "Renderer.poke is not implemented"
+    peek _ = error "Callbacks.peek is not implemented"
+    poke _ _ = error "Callbacks.poke is not implemented"
 
-c_sd_markdown :: Ptr Buffer -> Ptr Buffer -> Ptr Renderer -> Extensions -> IO ()
-c_sd_markdown ob ib rndr exts = c_sd_markdown' ob ib rndr (toCUInt exts)
+c_sd_markdown :: Ptr Buffer -> Ptr Buffer -> Extensions -> Ptr Callbacks -> Ptr () -> IO ()
+c_sd_markdown ob ib exts rndr opaque = c_sd_markdown' ob ib (toCUInt exts) rndr opaque
 foreign import ccall "markdown.h sd_markdown"
-  c_sd_markdown' :: Ptr Buffer -> Ptr Buffer -> Ptr Renderer -> CUInt -> IO ()
+  c_sd_markdown' :: Ptr Buffer -> Ptr Buffer -> CUInt -> Ptr Callbacks -> Ptr () -> IO ()

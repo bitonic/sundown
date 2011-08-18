@@ -1,10 +1,9 @@
 {-# Language ForeignFunctionInterface #-}
 
-module Text.Upskirt.Renderers.Html.Foreign
+module Text.Sundown.Renderers.Html.Foreign
        ( HtmlRenderMode (..)
        , c_sdhtml_renderer
        , c_sdhtml_toc_renderer
-       , c_sdhtml_free_renderer
        , c_sdhtml_smartypants
        ) where
 
@@ -12,10 +11,11 @@ module Text.Upskirt.Renderers.Html.Foreign
 import Foreign
 import Foreign.C.Types
 
-import Text.Upskirt.Buffer.Foreign
-import Text.Upskirt.Markdown.Foreign
-import Text.Upskirt.Flag
+import Text.Sundown.Buffer.Foreign
+import Text.Sundown.Markdown.Foreign
+import Text.Sundown.Flag
 
+#include "html.h"
 
 data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool
                                      , htmlSkipStyle :: Bool
@@ -43,17 +43,21 @@ instance Flag HtmlRenderMode where
                      , (11, htmlUseXhtml mode)
                      ]
 
+data HtmlRenderOptions
 
-c_sdhtml_renderer :: Ptr Renderer -> HtmlRenderMode -> IO ()
-c_sdhtml_renderer rndr mode = c_sdhtml_renderer' rndr (toCUInt mode)
+instance Storable HtmlRenderOptions where
+  sizeOf _ = (#size struct html_renderopt)
+  alignment _ = alignment (undefined :: Ptr ())
+  peek _ = error "HtmlRenderopt.peek is not implemented"
+  poke _ = error "HtmlRenderopt.poke is not implemented"
+
+c_sdhtml_renderer :: Ptr Callbacks -> Ptr HtmlRenderOptions -> HtmlRenderMode -> IO ()
+c_sdhtml_renderer rndr options mode = c_sdhtml_renderer' rndr options (toCUInt mode)
 foreign import ccall "html.h sdhtml_renderer"
-  c_sdhtml_renderer' :: Ptr Renderer -> CUInt -> IO ()
+  c_sdhtml_renderer' :: Ptr Callbacks -> Ptr HtmlRenderOptions -> CUInt -> IO ()
 
 foreign import ccall "html.h sdhtml_toc_renderer"
-  c_sdhtml_toc_renderer :: Ptr Renderer -> IO ()
-
-foreign import ccall "html.h sdhtml_free_renderer"
-  c_sdhtml_free_renderer :: Ptr Renderer -> IO ()
+  c_sdhtml_toc_renderer :: Ptr Callbacks -> Ptr HtmlRenderOptions -> IO ()
 
 foreign import ccall "html.h sdhtml_smartypants"
   c_sdhtml_smartypants :: Ptr Buffer -> Ptr Buffer -> IO ()

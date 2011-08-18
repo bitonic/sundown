@@ -1,9 +1,9 @@
-Upskirt bindings for haskell.
+[Sundown](https://github.com/tanoku/sundown) bindings for haskell.
 
-The haskell code is in the public domain, for the upskirt license see
+The haskell code is in the public domain, for the sundown license see
 the files in cbits/.
 
-See [hackage](http://hackage.haskell.org/package/upskirt) for
+See [hackage](http://hackage.haskell.org/package/sundown) for
 documentation.
 
 Please note that the library is not thread safe - I'll try to fix that

@@ -20,6 +20,7 @@ import Text.Sundown.Renderers.Html.Foreign
 
 -- | Parses a 'ByteString' containing the markdown, returns the Html
 -- code.
+{-# NOINLINE renderHtml #-}
 renderHtml :: ByteString -> Extensions -> HtmlRenderMode -> ByteString
 renderHtml input exts mode =
   unsafePerformIO $
@@ -54,6 +55,7 @@ allHtmlModes = HtmlRenderMode True True True True True True True True True True
 
 -- | Converts punctuation in Html entities,
 -- <http://daringfireball.net/projects/smartypants/>
+{-# NOINLINE smartypants #-}
 smartypants :: ByteString -> ByteString
 smartypants input =
   unsafePerformIO $ do

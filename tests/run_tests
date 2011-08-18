@@ -1,0 +1,10 @@
+#!/bin/sh
+
+ghc sundown.hs
+
+cd ./MarkdownTest_1.0.3
+./MarkdownTest.pl --script ../sundown
+
+cd ../
+rm -f sundown sundown.hi sundown.o
+

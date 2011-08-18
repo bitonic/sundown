@@ -23,7 +23,7 @@ Library
   Build-Depends:        base >= 3 && < 5
                       , bytestring
 
-  GHC-Options:          -Wall -O2
+  GHC-Options:          -Wall -O2 -threaded -fno-cse
   
   Extensions:           ForeignFunctionInterface, EmptyDataDecls
   

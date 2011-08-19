@@ -28,10 +28,10 @@ instance Storable Buffer where
   alignment _ = alignment (undefined :: CInt)
   peek ptr = do
     d  <- (#peek struct buf, data) ptr
+    s  <- (#peek struct buf, size) ptr
     dbs <- if d == nullPtr
            then return $ BS.pack [0]
-           else BS.packCString d
-    s  <- (#peek struct buf, size) ptr
+           else BS.packCStringLen (d, s)
     as <- (#peek struct buf, asize) ptr
     u  <- (#peek struct buf, unit) ptr
     r  <- (#peek struct buf, ref) ptr

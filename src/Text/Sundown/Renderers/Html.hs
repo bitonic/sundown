@@ -13,18 +13,27 @@ import Foreign
 
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
+import Data.Maybe (fromMaybe)
 
 import Text.Sundown.Markdown.Foreign
 import Text.Sundown.Buffer.Foreign
 import Text.Sundown.Renderers.Html.Foreign
 
+defaultMaxNesting :: Int
+defaultMaxNesting = 16
+
 -- | Parses a 'ByteString' containing the markdown, returns the Html
 -- code.
 {-# NOINLINE renderHtml #-}
-renderHtml :: ByteString -> Extensions -> HtmlRenderMode -> ByteString
-renderHtml input exts mode =
+renderHtml :: ByteString
+           -> Extensions
+           -> HtmlRenderMode
+           -> Maybe Int -- ^ The maximum nesting of the HTML. If Nothing, a default value (16)
+                       -- will be used.
+           -> ByteString
+renderHtml input exts mode maxNestingM =
   unsafePerformIO $
-  alloca $ \renderer ->
+  alloca $ \callbacks ->
   alloca $ \options -> do
     -- Allocate buffers
     ob <- c_bufnew 64
@@ -34,8 +43,11 @@ renderHtml input exts mode =
     c_bufputs ib input
     
     -- Do the markdown
-    c_sdhtml_renderer renderer options mode
-    c_sd_markdown ob ib exts renderer (castPtr options)
+    c_sdhtml_renderer callbacks options mode
+    let maxNesting = fromIntegral $ fromMaybe defaultMaxNesting maxNestingM
+    markdown <- c_sd_markdown_new exts maxNesting callbacks (castPtr options)
+    c_sd_markdown_render ob ib markdown
+    c_sd_markdown_free markdown
     
     -- Get the result
     Buffer {bufData = output} <- peek ob

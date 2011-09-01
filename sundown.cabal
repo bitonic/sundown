@@ -1,6 +1,6 @@
 Cabal-version:          >= 1.6
 Name:                   sundown
-Version:                0.1.2
+Version:                0.2
 Author:                 Francesco Mazzoli (f@mazzo.li)
 Maintainer:             Francesco Mazzoli (f@mazzo.li)
 Build-Type:             Simple
@@ -35,13 +35,15 @@ Library
                       , Text.Sundown.Renderers.Html.Foreign
                       , Text.Sundown.Flag
                       , Text.Sundown.Markdown.Foreign
-  
-  C-Sources:            cbits/array.c, cbits/buffer.c, cbits/markdown.c,
-                        cbits/html.c, cbits/html_smartypants.c,
-                        cbits/autolink.c
+
+  C-Sources:            cbits/autolink.c, cbits/buffer.c, cbits/html.c,
+                        cbits/html_smartypants.c, cbits/markdown.c,
+                        cbits/stack.c
   
   Include-Dirs:         cbits
   
-  Includes:             array.h, autolink.h, buffer.h, markdown.h, html.h
-  
-  Install-includes:     array.h, autolink.h, buffer.h, markdown.h, html.h
+  Includes:             autolink.h, buffer.h, html.h, html_blocks.h, markdown.h,
+                        stack.h
+
+  Install-includes:     autolink.h, buffer.h, html.h, html_blocks.h, markdown.h,
+                        stack.h

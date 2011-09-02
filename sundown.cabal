@@ -15,7 +15,7 @@ Description:
 
 source-repository head
   type:     git
-  location: git://github.com/rostayob/upskirt.git
+  location: git://github.com/rostayob/sundown.git
 
 Library
   Hs-Source-Dirs:       src

@@ -17,16 +17,16 @@ import Text.Sundown.Flag
 
 #include "html.h"
 
-data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool
-                                     , htmlSkipStyle :: Bool
-                                     , htmlSkipImages :: Bool
-                                     , htmlSkipLinks :: Bool
+data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool -- ^ Drop in-line HTML tags from the output
+                                     , htmlSkipStyle :: Bool -- ^ Don't add any style tags to the output
+                                     , htmlSkipImages :: Bool -- ^ Don't include images in the output
+                                     , htmlSkipLinks :: Bool -- ^ Don't include links in the output
                                      , htmlExpandTabs :: Bool
-                                     , htmlSafelink :: Bool
-                                     , htmlToc :: Bool
+                                     , htmlSafelink :: Bool -- ^ Sanity check links for known URL schemes
+                                     , htmlToc :: Bool -- ^ Include a table of contents in the output
                                      , htmlHardWrap :: Bool
                                      , htmlGithubBlockcode :: Bool
-                                     , htmlUseXhtml :: Bool
+                                     , htmlUseXhtml :: Bool -- ^ Produce XHTML output instead of HTML
                                      }
 
 

@@ -17,7 +17,7 @@ import Text.Sundown.Flag
 data Callbacks
 
 -- | A set of switches to enable or disable markdown features.
-data Extensions = Extensions { extNoIntraEmphasis :: Bool -- ^ An underscore insode a word does not designate emphasis.
+data Extensions = Extensions { extNoIntraEmphasis :: Bool -- ^ Turn off underscores insode a word does designating emphasis.
                              , extTables          :: Bool
                              , extFencedCode      :: Bool -- ^ Turns on a non-indentation form of code-blocks, by blocking off a region with ~ or \`.
                              , extAutolink        :: Bool -- ^ Turn things that look like URLs and email addresses into links

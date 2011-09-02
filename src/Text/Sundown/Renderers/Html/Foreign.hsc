@@ -17,7 +17,7 @@ import Text.Sundown.Flag
 
 #include "html.h"
 
-data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool -- ^ Don't produce a standalone HTML document - that is, don't add \<HTML\> and \<BODY\> tags and the like to the output
+data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool -- ^ Drop in-line HTML tags from the output
                                      , htmlSkipStyle :: Bool -- ^ Don't add any style tags to the output
                                      , htmlSkipImages :: Bool -- ^ Don't include images in the output
                                      , htmlSkipLinks :: Bool -- ^ Don't include links in the output
@@ -26,7 +26,7 @@ data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool -- ^ Don't produce a
                                      , htmlToc :: Bool -- ^ Include a table of contents in the output
                                      , htmlHardWrap :: Bool
                                      , htmlGithubBlockcode :: Bool
-                                     , htmlUseXhtml :: Bool -- ^ XHTML output, instead of HTML
+                                     , htmlUseXhtml :: Bool -- ^ Produce XHTML output instead of HTML
                                      }
 
 

@@ -17,12 +17,12 @@ import Text.Sundown.Flag
 #include "markdown.h"
 
 -- | A set of switches to enable or disable markdown features.
-data Extensions = Extensions { extNoIntraEmphasis :: Bool
+data Extensions = Extensions { extNoIntraEmphasis :: Bool -- ^ Turn off underscores insode a word does designating emphasis.
                              , extTables          :: Bool
-                             , extFencedCode      :: Bool
-                             , extAutolink        :: Bool
-                             , extStrikethrough   :: Bool
-                             , extLaxHtmlBlocks   :: Bool
+                             , extFencedCode      :: Bool -- ^ Turns on a non-indentation form of code-blocks, by blocking off a region with ~ or \`.
+                             , extAutolink        :: Bool -- ^ Turn things that look like URLs and email addresses into links
+                             , extStrikethrough   :: Bool -- ^ Surround text with `~` to designate it as struck through
+                             , extLaxHtmlBlocks   :: Bool -- ^ Allow HTML markup inside of paragraphs, instead requireing tags to be on separate lines
                              }
 
 instance Flag Extensions where

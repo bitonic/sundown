@@ -8,12 +8,13 @@ module Text.Sundown.Renderers.Html.Foreign
        ) where
 
 
+import Data.ByteString.Unsafe (unsafeUseAsCString)
 import Foreign
+import Foreign.C.String
 import Foreign.C.Types
-
 import Text.Sundown.Buffer.Foreign
-import Text.Sundown.Markdown.Foreign
 import Text.Sundown.Flag
+import Text.Sundown.Markdown.Foreign
 
 #include "html.h"
 
@@ -60,4 +61,4 @@ foreign import ccall "html.h sdhtml_toc_renderer"
   c_sdhtml_toc_renderer :: Ptr Callbacks -> Ptr HtmlRenderOptions -> IO ()
 
 foreign import ccall "html.h sdhtml_smartypants"
-  c_sdhtml_smartypants :: Ptr Buffer -> Ptr Buffer -> IO ()
+  c_sdhtml_smartypants :: Ptr Buffer -> CString -> CSize -> IO ()

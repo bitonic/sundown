@@ -8,9 +8,10 @@ module Text.Sundown.Markdown.Foreign
        , c_sd_markdown_free
        ) where
 
+import Data.ByteString.Unsafe (unsafeUseAsCString)
 import Foreign
+import Foreign.C.String
 import Foreign.C.Types
-
 import Text.Sundown.Buffer.Foreign
 import Text.Sundown.Flag
 
@@ -58,7 +59,7 @@ foreign import ccall "markdown.h sd_markdown_new"
   c_sd_markdown_new' :: CUInt -> CSize -> Ptr Callbacks -> Ptr () -> IO (Ptr Markdown)
 
 foreign import ccall "markdown.h sd_markdown_render"
-  c_sd_markdown_render :: Ptr Buffer -> Ptr Buffer -> Ptr Markdown -> IO ()
+  c_sd_markdown_render :: Ptr Buffer -> CString -> CSize -> Ptr Markdown -> IO ()
 
 foreign import ccall "markdown.h sd_markdown_free"
   c_sd_markdown_free :: Ptr Markdown -> IO ()

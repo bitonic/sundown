@@ -44,13 +44,17 @@ renderHtml input exts mode maxNestingM =
     
     -- Do the markdown
     c_sdhtml_renderer callbacks options mode
+    
     let maxNesting = fromIntegral $ fromMaybe defaultMaxNesting maxNestingM
     markdown <- c_sd_markdown_new exts maxNesting callbacks (castPtr options)
-    c_sd_markdown_render ob ib markdown
+
+    Buffer {bufData = cs, bufSize = size} <- peek ib
+    c_sd_markdown_render ob cs size markdown
+
     c_sd_markdown_free markdown
     
     -- Get the result
-    Buffer {bufData = output} <- peek ob
+    output <- peek ob >>= getBufferData
     
     c_bufrelease ib
     c_bufrelease ob    
@@ -75,10 +79,11 @@ smartypants input =
     ib <- c_bufnew $ fromInteger . toInteger $ BS.length input
     
     c_bufputs ib input
+
+    Buffer {bufData = cs, bufSize = size} <- peek ib
+    c_sdhtml_smartypants ob cs size
     
-    c_sdhtml_smartypants ob ib
-    
-    Buffer {bufData = output} <- peek ob
+    output <- peek ob >>= getBufferData
     
     c_bufrelease ib
     c_bufrelease ob

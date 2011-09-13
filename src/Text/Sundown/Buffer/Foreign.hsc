@@ -2,25 +2,25 @@
 
 module Text.Sundown.Buffer.Foreign
        ( Buffer (..)
+       , getBufferData
        , c_bufnew
        , c_bufputs
        , c_bufgrow
        , c_bufrelease
        ) where
 
-import Foreign
-import Foreign.C.Types
-import Foreign.C.String
 import Data.ByteString         (ByteString)
 import qualified Data.ByteString as BS
+import Foreign
+import Foreign.C.String
+import Foreign.C.Types
 
 #include "buffer.h"
 
-data Buffer = Buffer { bufData  :: ByteString
-                     , bufSize  :: Int
-                     , bufASize :: Int
-                     , bufUnit  :: Int
-                     , bufRef   :: Int
+data Buffer = Buffer { bufData  :: CString
+                     , bufSize  :: CSize
+                     , bufASize :: CSize
+                     , bufUnit  :: CSize
                      }
 
 instance Storable Buffer where
@@ -29,14 +29,14 @@ instance Storable Buffer where
   peek ptr = do
     d  <- (#peek struct buf, data) ptr
     s  <- (#peek struct buf, size) ptr
-    dbs <- if d == nullPtr
-           then return $ BS.pack [0]
-           else BS.packCStringLen (d, s)
     as <- (#peek struct buf, asize) ptr
     u  <- (#peek struct buf, unit) ptr
-    r  <- (#peek struct buf, ref) ptr
-    return $ Buffer dbs s as u r
+    return $ Buffer d s as u
   poke _ _ = error "Buffer.poke not implemented."
+
+getBufferData :: Buffer -> IO ByteString
+getBufferData (Buffer d s _ _) | d == nullPtr = return $ BS.pack [0]
+                               | otherwise = BS.packCStringLen (d, fromIntegral s)
 
 foreign import ccall "buffer.h bufnew"
   c_bufnew :: CSize -> IO (Ptr Buffer)

@@ -18,12 +18,15 @@ import Text.Sundown.Markdown.Foreign
 
 #include "html.h"
 
-data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool -- ^ Drop in-line HTML tags from the output
-                                     , htmlSkipStyle :: Bool -- ^ Don't add any style tags to the output
+data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool -- ^ Drop in-line HTML tags from the
+                                                           -- output
+                                     , htmlSkipStyle :: Bool -- ^ Don't add any style tags to the
+                                                            -- output
                                      , htmlSkipImages :: Bool -- ^ Don't include images in the output
                                      , htmlSkipLinks :: Bool -- ^ Don't include links in the output
                                      , htmlExpandTabs :: Bool
-                                     , htmlSafelink :: Bool -- ^ Sanity check links for known URL schemes
+                                     , htmlSafelink :: Bool -- ^ Sanity check links for known URL
+                                                           -- schemes
                                      , htmlToc :: Bool -- ^ Include a table of contents in the output
                                      , htmlHardWrap :: Bool
                                      , htmlUseXhtml :: Bool -- ^ Produce XHTML output instead of HTML
@@ -31,14 +34,14 @@ data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool -- ^ Drop in-line HT
 
 
 instance Flag HtmlRenderMode where
-  flagIndexes mode = [ (0,  htmlSkipHtml mode)
-                     , (1,  htmlSkipStyle mode)
-                     , (2,  htmlSkipImages mode)
-                     , (3,  htmlSkipLinks mode)
-                     , (4,  htmlExpandTabs mode)
-                     , (5,  htmlSafelink mode)
-                     , (6,  htmlToc mode)
-                     , (7,  htmlHardWrap mode)
+  flagIndexes mode = [ (0, htmlSkipHtml mode)
+                     , (1, htmlSkipStyle mode)
+                     , (2, htmlSkipImages mode)
+                     , (3, htmlSkipLinks mode)
+                     , (4, htmlExpandTabs mode)
+                     , (5, htmlSafelink mode)
+                     , (6, htmlToc mode)
+                     , (7, htmlHardWrap mode)
                      , (8, htmlUseXhtml mode)
                      ]
 

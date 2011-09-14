@@ -26,7 +26,6 @@ data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool -- ^ Drop in-line HT
                                      , htmlSafelink :: Bool -- ^ Sanity check links for known URL schemes
                                      , htmlToc :: Bool -- ^ Include a table of contents in the output
                                      , htmlHardWrap :: Bool
-                                     , htmlGithubBlockcode :: Bool
                                      , htmlUseXhtml :: Bool -- ^ Produce XHTML output instead of HTML
                                      }
 
@@ -36,12 +35,11 @@ instance Flag HtmlRenderMode where
                      , (1,  htmlSkipStyle mode)
                      , (2,  htmlSkipImages mode)
                      , (3,  htmlSkipLinks mode)
-                     , (5,  htmlExpandTabs mode)
-                     , (7,  htmlSafelink mode)
-                     , (8,  htmlToc mode)
-                     , (9,  htmlHardWrap mode)
-                     , (10, htmlGithubBlockcode mode)
-                     , (11, htmlUseXhtml mode)
+                     , (4,  htmlExpandTabs mode)
+                     , (5,  htmlSafelink mode)
+                     , (6,  htmlToc mode)
+                     , (7,  htmlHardWrap mode)
+                     , (8, htmlUseXhtml mode)
                      ]
 
 data HtmlRenderOptions

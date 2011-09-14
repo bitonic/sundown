@@ -24,6 +24,8 @@ data Extensions = Extensions { extNoIntraEmphasis :: Bool -- ^ Turn off undersco
                              , extAutolink        :: Bool -- ^ Turn things that look like URLs and email addresses into links
                              , extStrikethrough   :: Bool -- ^ Surround text with `~` to designate it as struck through
                              , extLaxHtmlBlocks   :: Bool -- ^ Allow HTML markup inside of paragraphs, instead requireing tags to be on separate lines
+                             , extSpaceHeaders    :: Bool
+                             , extSuperscript     :: Bool
                              }
 
 instance Flag Extensions where
@@ -33,6 +35,8 @@ instance Flag Extensions where
                      , (3, extAutolink exts)
                      , (4, extStrikethrough exts)
                      , (5, extLaxHtmlBlocks exts)
+                     , (6, extSpaceHeaders exts)
+                     , (7, extSuperScript exts)
                      ]
 
 

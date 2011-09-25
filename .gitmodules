@@ -1,0 +1,3 @@
+[submodule "sundown-c"]
+	path = sundown-c
+	url = https://github.com/tanoku/sundown.git

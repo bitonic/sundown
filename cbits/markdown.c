@@ -758,7 +758,7 @@ char_langle_tag(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t 
 static size_t
 char_autolink_www(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t offset, size_t size)
 {
-	struct buf *link, *link_url;
+	struct buf *link, *link_url, *link_text;
 	size_t link_len, rewind;
 
 	if (!rndr->cb.link)
@@ -772,7 +772,14 @@ char_autolink_www(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_
 		bufput(link_url, link->data, link->size);
 
 		ob->size -= rewind;
-		rndr->cb.link(ob, link_url, NULL, link, rndr->opaque);
+		if (rndr->cb.normal_text) {
+			link_text = rndr_newbuf(rndr, BUFFER_SPAN);
+			rndr->cb.normal_text(link_text, link, rndr->opaque);
+			rndr->cb.link(ob, link_url, NULL, link_text, rndr->opaque);
+			rndr_popbuf(rndr, BUFFER_SPAN);
+		} else {
+			rndr->cb.link(ob, link_url, NULL, link, rndr->opaque);
+		}
 		rndr_popbuf(rndr, BUFFER_SPAN);
 	}
 
@@ -1775,7 +1782,7 @@ parse_htmlblock(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t 
 	while (i < size && data[i] != '>' && data[i] != ' ')
 		i++;
 
-	if (i < size && data[i] == '>')
+	if (i < size)
 		curtag = find_block_tag((char *)data + 1, i - 1);
 
 	/* handling of special cases */
@@ -1862,7 +1869,14 @@ parse_htmlblock(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t 
 }
 
 static void
-parse_table_row(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t size, size_t columns, int *col_data)
+parse_table_row(
+	struct buf *ob,
+	struct sd_markdown *rndr,
+	uint8_t *data,
+	size_t size,
+	size_t columns,
+	int *col_data,
+	int header_flag)
 {
 	size_t i = 0, col;
 	struct buf *row_work = 0;
@@ -1895,7 +1909,7 @@ parse_table_row(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t 
 			cell_end--;
 
 		parse_inline(cell_work, rndr, data + cell_start, 1 + cell_end - cell_start);
-		rndr->cb.table_cell(row_work, cell_work, col_data[col], rndr->opaque);
+		rndr->cb.table_cell(row_work, cell_work, col_data[col] | header_flag, rndr->opaque);
 
 		rndr_popbuf(rndr, BUFFER_SPAN);
 		i++;
@@ -1903,7 +1917,7 @@ parse_table_row(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t 
 
 	for (; col < columns; ++col) {
 		struct buf empty_cell = { 0, 0, 0, 0 };
-		rndr->cb.table_cell(row_work, &empty_cell, col_data[col], rndr->opaque);
+		rndr->cb.table_cell(row_work, &empty_cell, col_data[col] | header_flag, rndr->opaque);
 	}
 
 	rndr->cb.table_row(ob, row_work, rndr->opaque);
@@ -1912,7 +1926,13 @@ parse_table_row(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t 
 }
 
 static size_t
-parse_table_header(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t size, size_t *columns, int **column_data)
+parse_table_header(
+	struct buf *ob,
+	struct sd_markdown *rndr,
+	uint8_t *data,
+	size_t size,
+	size_t *columns,
+	int **column_data)
 {
 	int pipes;
 	size_t i = 0, col, header_end, under_end;
@@ -1948,8 +1968,6 @@ parse_table_header(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size
 	for (col = 0; col < *columns && i < under_end; ++col) {
 		size_t dashes = 0;
 
-		(*column_data)[col] |= MKD_TABLE_HEADER;
-
 		while (i < under_end && data[i] == ' ')
 			i++;
 
@@ -1982,12 +2000,23 @@ parse_table_header(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size
 	if (col < *columns)
 		return 0;
 
-	parse_table_row(ob, rndr, data, header_end, *columns, *column_data);
+	parse_table_row(
+		ob, rndr, data,
+		header_end,
+		*columns,
+		*column_data,
+		MKD_TABLE_HEADER
+	);
+
 	return under_end + 1;
 }
 
 static size_t
-parse_table(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t size)
+parse_table(
+	struct buf *ob,
+	struct sd_markdown *rndr,
+	uint8_t *data,
+	size_t size)
 {
 	size_t i;
 
@@ -2018,7 +2047,15 @@ parse_table(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t size
 				break;
 			}
 
-			parse_table_row(body_work, rndr, data + row_start, i - row_start, columns, col_data);
+			parse_table_row(
+				body_work,
+				rndr,
+				data + row_start,
+				i - row_start,
+				columns,
+				col_data, 0
+			);
+
 			i++;
 		}
 

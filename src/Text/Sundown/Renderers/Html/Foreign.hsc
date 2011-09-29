@@ -7,8 +7,6 @@ module Text.Sundown.Renderers.Html.Foreign
        , c_sdhtml_smartypants
        ) where
 
-
-import Data.ByteString.Unsafe (unsafeUseAsCString)
 import Foreign
 import Foreign.C.String
 import Foreign.C.Types

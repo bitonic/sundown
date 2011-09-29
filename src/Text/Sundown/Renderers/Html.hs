@@ -38,13 +38,13 @@ renderHtml input exts mode maxNestingM =
     -- Allocate buffers
     ob <- c_bufnew 64
     ib <- c_bufnew . fromIntegral . BS.length $ input
-    
+
     -- Put the input content into the buffer
     c_bufputs ib input
-    
+
     -- Do the markdown
     c_sdhtml_renderer callbacks options mode
-    
+
     let maxNesting = fromIntegral $ fromMaybe defaultMaxNesting maxNestingM
     markdown <- c_sd_markdown_new exts maxNesting callbacks (castPtr options)
 
@@ -52,22 +52,22 @@ renderHtml input exts mode maxNestingM =
     c_sd_markdown_render ob cs size markdown
 
     c_sd_markdown_free markdown
-    
+
     -- Get the result
     output <- peek ob >>= getBufferData
-    
+
     c_bufrelease ib
-    c_bufrelease ob    
-    
+    c_bufrelease ob
+
     return output
 
 -- | All the 'HtmlRenderMode' disabled
 noHtmlModes :: HtmlRenderMode
-noHtmlModes = HtmlRenderMode False False False False False False False False False False
+noHtmlModes = HtmlRenderMode False False False False False False False False False
 
 -- | All the 'HtmlRenderMode' enabled
 allHtmlModes :: HtmlRenderMode
-allHtmlModes = HtmlRenderMode True True True True True True True True True True
+allHtmlModes = HtmlRenderMode True True True True True True True True True
 
 -- | Converts punctuation in Html entities,
 -- <http://daringfireball.net/projects/smartypants/>
@@ -77,15 +77,15 @@ smartypants input =
   unsafePerformIO $ do
     ob <- c_bufnew 64
     ib <- c_bufnew $ fromInteger . toInteger $ BS.length input
-    
+
     c_bufputs ib input
 
     Buffer {bufData = cs, bufSize = size} <- peek ib
     c_sdhtml_smartypants ob cs size
-    
+
     output <- peek ob >>= getBufferData
-    
+
     c_bufrelease ib
     c_bufrelease ob
-    
+
     return output

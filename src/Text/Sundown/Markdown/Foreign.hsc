@@ -8,7 +8,6 @@ module Text.Sundown.Markdown.Foreign
        , c_sd_markdown_free
        ) where
 
-import Data.ByteString.Unsafe (unsafeUseAsCString)
 import Foreign
 import Foreign.C.String
 import Foreign.C.Types
@@ -43,7 +42,7 @@ instance Flag Extensions where
                      , (4, extStrikethrough exts)
                      , (5, extLaxHtmlBlocks exts)
                      , (6, extSpaceHeaders exts)
-                     , (7, extSuperScript exts)
+                     , (7, extSuperscript exts)
                      ]
 
 

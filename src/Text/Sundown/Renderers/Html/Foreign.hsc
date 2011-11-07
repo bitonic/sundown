@@ -32,15 +32,15 @@ data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool -- ^ Drop in-line HT
 
 
 instance Flag HtmlRenderMode where
-  flagIndexes mode = [ (0, htmlSkipHtml mode)
-                     , (1, htmlSkipStyle mode)
-                     , (2, htmlSkipImages mode)
-                     , (3, htmlSkipLinks mode)
-                     , (4, htmlExpandTabs mode)
-                     , (5, htmlSafelink mode)
-                     , (6, htmlToc mode)
-                     , (7, htmlHardWrap mode)
-                     , (8, htmlUseXhtml mode)
+  flagIndexes mode = [ (#{const HTML_SKIP_HTML}, htmlSkipHtml mode)
+                     , (#{const HTML_SKIP_STYLE}, htmlSkipStyle mode)
+                     , (#{const HTML_SKIP_IMAGES}, htmlSkipImages mode)
+                     , (#{const HTML_SKIP_LINKS}, htmlSkipLinks mode)
+                     , (#{const HTML_EXPAND_TABS}, htmlExpandTabs mode)
+                     , (#{const HTML_SAFELINK}, htmlSafelink mode)
+                     , (#{const HTML_TOC}, htmlToc mode)
+                     , (#{const HTML_HARD_WRAP}, htmlHardWrap mode)
+                     , (#{const HTML_USE_XHTML}, htmlUseXhtml mode)
                      ]
 
 data HtmlRenderOptions

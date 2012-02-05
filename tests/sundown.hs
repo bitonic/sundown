@@ -3,7 +3,7 @@ import Text.Sundown
 import Text.Sundown.Renderers.Html
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.UTF8 as UTF8
-import System (getArgs)
+import System.Environment (getArgs)
 import Control.Monad (liftM)
 
 main :: IO ()

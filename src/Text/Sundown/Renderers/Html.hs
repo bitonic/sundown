@@ -8,8 +8,11 @@ module Text.Sundown.Renderers.Html
        , HtmlRenderMode (..)
        ) where
 
+import Foreign.Marshal
+import Foreign.Ptr
+import Foreign.Storable
 
-import Foreign
+import System.IO.Unsafe
 
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS

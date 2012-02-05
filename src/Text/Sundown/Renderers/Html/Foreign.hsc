@@ -28,6 +28,7 @@ data HtmlRenderMode = HtmlRenderMode { htmlSkipHtml :: Bool -- ^ Drop in-line HT
                                      , htmlToc :: Bool -- ^ Include a table of contents in the output
                                      , htmlHardWrap :: Bool
                                      , htmlUseXhtml :: Bool -- ^ Produce XHTML output instead of HTML
+                                     , htmlEscape :: Bool
                                      }
 
 
@@ -41,6 +42,7 @@ instance Flag HtmlRenderMode where
                      , (#{const HTML_TOC}, htmlToc mode)
                      , (#{const HTML_HARD_WRAP}, htmlHardWrap mode)
                      , (#{const HTML_USE_XHTML}, htmlUseXhtml mode)
+                     , (#{const HTML_ESCAPE}, htmlEscape mode)
                      ]
 
 data HtmlRenderOptions

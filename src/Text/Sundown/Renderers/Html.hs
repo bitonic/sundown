@@ -66,11 +66,11 @@ renderHtml input exts mode maxNestingM =
 
 -- | All the 'HtmlRenderMode' disabled
 noHtmlModes :: HtmlRenderMode
-noHtmlModes = HtmlRenderMode False False False False False False False False False
+noHtmlModes = HtmlRenderMode False False False False False False False False False False
 
 -- | All the 'HtmlRenderMode' enabled
 allHtmlModes :: HtmlRenderMode
-allHtmlModes = HtmlRenderMode True True True True True True True True True
+allHtmlModes = HtmlRenderMode True True True True True True True True True True
 
 -- | Converts punctuation in Html entities,
 -- <http://daringfireball.net/projects/smartypants/>

@@ -1,6 +1,6 @@
 Cabal-version:          >= 1.6
 Name:                   sundown
-Version:                0.4
+Version:                0.4.1
 Author:                 Francesco Mazzoli (f@mazzo.li)
 Maintainer:             Francesco Mazzoli (f@mazzo.li)
 Build-Type:             Simple
@@ -8,7 +8,7 @@ License:                PublicDomain
 Build-Type:             Simple
 Category:               Foreign binding, Text
 Synopsis:               Bindings to the sundown markdown library
-Tested-With:            GHC==7.0.2
+Tested-With:            GHC==7.2.2
 Description:
   Bindings to the github fork of sundown, a nice C markdown library:
   <https://github.com/tanoku/sundown>
@@ -24,9 +24,9 @@ Library
                       , bytestring
 
   GHC-Options:          -Wall -O2 -fno-cse
-  
+
   Extensions:           ForeignFunctionInterface, EmptyDataDecls
-  
+
   Exposed-Modules:      Text.Sundown
                       , Text.Sundown.Markdown
                       , Text.Sundown.Renderers.Html
@@ -39,9 +39,9 @@ Library
   C-Sources:            cbits/autolink.c, cbits/buffer.c, cbits/houdini_href_e.c,
                         cbits/houdini_html_e.c, cbits/html.c, cbits/html_smartypants.c,
                         cbits/markdown.c, cbits/stack.c
-  
+
   Include-Dirs:         cbits
-  
+
   Includes:             autolink.h, buffer.h, html.h, html_blocks.h, markdown.h, stack.h
 
   Install-includes:     autolink.h, buffer.h, houdini.h, html.h, html_blocks.h, markdown.h, stack.h

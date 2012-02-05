@@ -64,4 +64,3 @@ extern void
 sdhtml_smartypants(struct buf *ob, const uint8_t *text, size_t size);
 
 #endif
-

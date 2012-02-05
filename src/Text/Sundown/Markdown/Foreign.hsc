@@ -35,14 +35,14 @@ data Extensions = Extensions { extNoIntraEmphasis :: Bool -- ^ Turn off undersco
                              }
 
 instance Flag Extensions where
-  flagIndexes exts = [ (0, extNoIntraEmphasis exts)
-                     , (1, extTables exts)
-                     , (2, extFencedCode exts)
-                     , (3, extAutolink exts)
-                     , (4, extStrikethrough exts)
-                     , (5, extLaxHtmlBlocks exts)
-                     , (6, extSpaceHeaders exts)
-                     , (7, extSuperscript exts)
+  flagIndexes exts = [ (#{const MKDEXT_NO_INTRA_EMPHASIS}, extNoIntraEmphasis exts)
+                     , (#{const MKDEXT_TABLES}, extTables exts)
+                     , (#{const MKDEXT_FENCED_CODE}, extFencedCode exts)
+                     , (#{const MKDEXT_AUTOLINK}, extAutolink exts)
+                     , (#{const MKDEXT_STRIKETHROUGH}, extStrikethrough exts)
+                     , (#{const MKDEXT_LAX_HTML_BLOCKS}, extLaxHtmlBlocks exts)
+                     , (#{const MKDEXT_SPACE_HEADERS}, extSpaceHeaders exts)
+                     , (#{const MKDEXT_SUPERSCRIPT}, extSuperscript exts)
                      ]
 
 

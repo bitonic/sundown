@@ -18,8 +18,6 @@ import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import Data.Maybe (fromMaybe)
 
-import System.IO.Unsafe (unsafePerformIO)
-
 import Text.Sundown.Markdown.Foreign
 import Text.Sundown.Buffer.Foreign
 import Text.Sundown.Renderers.Html.Foreign

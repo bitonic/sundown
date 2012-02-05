@@ -111,6 +111,7 @@ struct sd_markdown {
 	struct stack work_bufs[2];
 	unsigned int ext_flags;
 	size_t max_nesting;
+	int in_link_body;
 };
 
 /***************************
@@ -372,7 +373,6 @@ parse_inline(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t siz
 		if (end >= size) break;
 		i = end;
 
-		/* calling the trigger */
 		end = markdown_char_ptrs[(int)action](ob, rndr, data + i, i, size - i);
 		if (!end) /* no action from the callback */
 			end = i + 1;
@@ -425,7 +425,6 @@ find_emph_char(uint8_t *data, size_t size, uint8_t c)
 			}
 
 			if (i >= size) return tmp_i;
-			i++;
 		}
 		/* skipping a link */
 		else if (data[i] == '[') {
@@ -682,7 +681,7 @@ char_codespan(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t of
 static size_t
 char_escape(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t offset, size_t size)
 {
-	static const char *escape_chars = "\\`*_{}[]()#+-.!:|&<>";
+	static const char *escape_chars = "\\`*_{}[]()#+-.!:|&<>^~";
 	struct buf work = { 0, 0, 0, 0 };
 
 	if (size > 1) {
@@ -695,6 +694,8 @@ char_escape(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t offs
 			rndr->cb.normal_text(ob, &work, rndr->opaque);
 		}
 		else bufputc(ob, data[1]);
+	} else if (size == 1) {
+		bufputc(ob, data[0]);
 	}
 
 	return 2;
@@ -761,7 +762,7 @@ char_autolink_www(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_
 	struct buf *link, *link_url, *link_text;
 	size_t link_len, rewind;
 
-	if (!rndr->cb.link)
+	if (!rndr->cb.link || rndr->in_link_body)
 		return 0;
 
 	link = rndr_newbuf(rndr, BUFFER_SPAN);
@@ -793,7 +794,7 @@ char_autolink_email(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, siz
 	struct buf *link;
 	size_t link_len, rewind;
 
-	if (!rndr->cb.autolink)
+	if (!rndr->cb.autolink || rndr->in_link_body)
 		return 0;
 
 	link = rndr_newbuf(rndr, BUFFER_SPAN);
@@ -813,7 +814,7 @@ char_autolink_url(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_
 	struct buf *link;
 	size_t link_len, rewind;
 
-	if (!rndr->cb.autolink)
+	if (!rndr->cb.autolink || rndr->in_link_body)
 		return 0;
 
 	link = rndr_newbuf(rndr, BUFFER_SPAN);
@@ -839,6 +840,7 @@ char_link(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t offset
 	struct buf *u_link = 0;
 	size_t org_work_size = rndr->work_bufs[BUFFER_SPAN].size;
 	int text_has_nl = 0, ret = 0;
+	int in_title = 0, qtype = 0;
 
 	/* checking whether the correct renderer exists */
 	if ((is_img && !rndr->cb.image) || (!is_img && !rndr->cb.link))
@@ -886,7 +888,8 @@ char_link(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t offset
 		/* looking for link end: ' " ) */
 		while (i < size) {
 			if (data[i] == '\\') i += 2;
-			else if (data[i] == ')' || data[i] == '\'' || data[i] == '"') break;
+			else if (data[i] == ')') break;
+			else if (i >= 1 && _isspace(data[i-1]) && (data[i] == '\'' || data[i] == '"')) break;
 			else i++;
 		}
 
@@ -895,12 +898,15 @@ char_link(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t offset
 
 		/* looking for title end if present */
 		if (data[i] == '\'' || data[i] == '"') {
+			qtype = data[i];
+			in_title = 1;
 			i++;
 			title_b = i;
 
 			while (i < size) {
 				if (data[i] == '\\') i += 2;
-				else if (data[i] == ')') break;
+				else if (data[i] == qtype) {in_title = 0; i++;}
+				else if ((data[i] == ')') && !in_title) break;
 				else i++;
 			}
 
@@ -1026,8 +1032,15 @@ char_link(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t offset
 	/* building content: img alt is escaped, link content is parsed */
 	if (txt_e > 1) {
 		content = rndr_newbuf(rndr, BUFFER_SPAN);
-		if (is_img) bufput(content, data + 1, txt_e - 1);
-		else parse_inline(content, rndr, data + 1, txt_e - 1);
+		if (is_img) {
+			bufput(content, data + 1, txt_e - 1);
+		} else {
+			/* disable autolinking when parsing inline the
+			 * content of a link */
+			rndr->in_link_body = 1;
+			parse_inline(content, rndr, data + 1, txt_e - 1);
+			rndr->in_link_body = 0;
+		}
 	}
 
 	if (link) {
@@ -1565,7 +1578,7 @@ parse_listitem(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t s
 	struct buf *work = 0, *inter = 0;
 	size_t beg = 0, end, pre, sublist = 0, orgpre = 0, i;
 	int in_empty = 0, has_inside_empty = 0;
-	int has_next_uli, has_next_oli;
+	size_t has_next_uli, has_next_oli;
 
 	/* keeping track of the first indentation prefix */
 	while (orgpre < 3 && orgpre < size && data[orgpre] == ' ')
@@ -1616,8 +1629,9 @@ parse_listitem(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t s
 		has_next_oli = prefix_oli(data + beg + i, end - beg - i);
 
 		/* checking for ul/ol switch */
-		if (((*flags & MKD_LIST_ORDERED) && has_next_uli) ||
-			(!(*flags & MKD_LIST_ORDERED) && has_next_oli)) {
+		if (in_empty && (
+			((*flags & MKD_LIST_ORDERED) && has_next_uli) ||
+			(!(*flags & MKD_LIST_ORDERED) && has_next_oli))){
 			*flags |= MKD_LI_END;
 			break; /* the following item must have same list type */
 		}
@@ -1792,7 +1806,7 @@ parse_htmlblock(struct buf *ob, struct sd_markdown *rndr, uint8_t *data, size_t 
 		i++;
 
 	if (i < size)
-		curtag = find_block_tag((char *)data + 1, i - 1);
+		curtag = find_block_tag((char *)data + 1, (int)i - 1);
 
 	/* handling of special cases */
 	if (!curtag) {
@@ -2341,6 +2355,7 @@ sd_markdown_new(
 	md->ext_flags = extensions;
 	md->opaque = opaque;
 	md->max_nesting = max_nesting;
+	md->in_link_body = 0;
 
 	return md;
 }
@@ -2348,7 +2363,8 @@ sd_markdown_new(
 void
 sd_markdown_render(struct buf *ob, const uint8_t *document, size_t doc_size, struct sd_markdown *md)
 {
-	static const float MARKDOWN_GROW_FACTOR = 1.4f;
+#define MARKDOWN_GROW(x) ((x) + ((x) >> 1))
+	static const char UTF8_BOM[] = {0xEF, 0xBB, 0xBF};
 
 	struct buf *text;
 	size_t beg, end;
@@ -2365,6 +2381,12 @@ sd_markdown_render(struct buf *ob, const uint8_t *document, size_t doc_size, str
 
 	/* first pass: looking for references, copying everything else */
 	beg = 0;
+
+	/* Skip a possible UTF-8 BOM, even though the Unicode standard
+	 * discourages having these in UTF-8 documents */
+	if (doc_size >= 3 && memcmp(document, UTF8_BOM, 3) == 0)
+		beg += 3;
+
 	while (beg < doc_size) /* iterating over lines */
 		if (is_ref(document, beg, doc_size, &end, md->refs))
 			beg = end;
@@ -2388,7 +2410,7 @@ sd_markdown_render(struct buf *ob, const uint8_t *document, size_t doc_size, str
 		}
 
 	/* pre-grow the output buffer to minimize allocations */
-	bufgrow(ob, text->size * MARKDOWN_GROW_FACTOR);
+	bufgrow(ob, MARKDOWN_GROW(text->size));
 
 	/* second pass: actual rendering */
 	if (md->cb.doc_header)

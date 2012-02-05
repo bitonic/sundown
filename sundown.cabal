@@ -8,7 +8,7 @@ License:                PublicDomain
 Build-Type:             Simple
 Category:               Foreign binding, Text
 Synopsis:               Bindings to the sundown markdown library
-Tested-With:            GHC==7.2
+Tested-With:            GHC==7.2.2
 Description:
   Bindings to the github fork of sundown, a nice C markdown library:
   <https://github.com/tanoku/sundown>

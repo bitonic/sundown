@@ -8,7 +8,11 @@ module Text.Sundown.Renderers.Html
        , HtmlRenderMode (..)
        ) where
 
-import Foreign (alloca, castPtr, peek)
+import Foreign.Marshal
+import Foreign.Ptr
+import Foreign.Storable
+
+import System.IO.Unsafe
 
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
@@ -64,11 +68,11 @@ renderHtml input exts mode maxNestingM =
 
 -- | All the 'HtmlRenderMode' disabled
 noHtmlModes :: HtmlRenderMode
-noHtmlModes = HtmlRenderMode False False False False False False False False False
+noHtmlModes = HtmlRenderMode False False False False False False False False False False
 
 -- | All the 'HtmlRenderMode' enabled
 allHtmlModes :: HtmlRenderMode
-allHtmlModes = HtmlRenderMode True True True True True True True True True
+allHtmlModes = HtmlRenderMode True True True True True True True True True True
 
 -- | Converts punctuation in Html entities,
 -- <http://daringfireball.net/projects/smartypants/>

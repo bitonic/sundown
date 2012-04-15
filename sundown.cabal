@@ -15,7 +15,7 @@ Description:
 
 source-repository head
   type:     git
-  location: git://github.com/bitonic/sundown.git
+  location: https://github.com/bitonic/sundown
 
 Library
   Hs-Source-Dirs:       src

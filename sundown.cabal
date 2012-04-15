@@ -1,6 +1,6 @@
 Cabal-version:          >= 1.6
 Name:                   sundown
-Version:                0.4.1
+Version:                0.4.1.1
 Author:                 Francesco Mazzoli (f@mazzo.li)
 Maintainer:             Francesco Mazzoli (f@mazzo.li)
 Build-Type:             Simple
@@ -9,6 +9,8 @@ Build-Type:             Simple
 Category:               Foreign binding, Text
 Synopsis:               Bindings to the sundown markdown library
 Tested-With:            GHC==7.2.2
+Homepage:               https://github.com/bitonic/sundown
+Bug-Reports:            https://github.com/bitonic/sundown/issues
 Description:
   Bindings to the github fork of sundown, a nice C markdown library:
   <https://github.com/tanoku/sundown>

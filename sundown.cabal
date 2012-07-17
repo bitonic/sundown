@@ -1,6 +1,6 @@
 Cabal-version:      >= 1.6
 Name:               sundown
-Version:            0.4.1.2
+Version:            0.4.2
 Author:             Francesco Mazzoli (f@mazzo.li)
 Maintainer:         Francesco Mazzoli (f@mazzo.li)
 Build-Type:         Simple

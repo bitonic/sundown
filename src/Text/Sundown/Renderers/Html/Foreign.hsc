@@ -2,9 +2,9 @@
 
 module Text.Sundown.Renderers.Html.Foreign
     ( HtmlRenderMode (..)
-    , c_sdhtml_renderer
-    , c_sdhtml_toc_renderer
-    , c_sdhtml_smartypants
+    , sdhtml_renderer
+    , sdhtml_torenderer
+    , sdhtml_smartypants
     ) where
 
 import Foreign
@@ -13,7 +13,7 @@ import Foreign.C.Types
 
 import Text.Sundown.Buffer.Foreign
 import Text.Sundown.Flag
-import Text.Sundown.Markdown.Foreign
+import Text.Sundown.Foreign
 
 #include "html.h"
 
@@ -52,16 +52,14 @@ instance Storable HtmlRenderOptions where
     peek _      = error "HtmlRenderopt.peek is not implemented"
     poke _      = error "HtmlRenderopt.poke is not implemented"
 
-c_sdhtml_renderer
+sdhtml_renderer
     :: Ptr Callbacks -> Ptr HtmlRenderOptions -> HtmlRenderMode -> IO ()
-c_sdhtml_renderer rndr options mode =
-    c_sdhtml_renderer' rndr options (toCUInt mode)
+sdhtml_renderer rndr options mode = sdhtml_renderer' rndr options (toCUInt mode)
 foreign import ccall "html.h sdhtml_renderer"
-    c_sdhtml_renderer'
-        :: Ptr Callbacks -> Ptr HtmlRenderOptions -> CUInt -> IO ()
+    sdhtml_renderer' :: Ptr Callbacks -> Ptr HtmlRenderOptions -> CUInt -> IO ()
 
-foreign import ccall "html.h sdhtml_toc_renderer"
-    c_sdhtml_toc_renderer :: Ptr Callbacks -> Ptr HtmlRenderOptions -> IO ()
+foreign import ccall "html.h sdhtml_torenderer"
+    sdhtml_torenderer :: Ptr Callbacks -> Ptr HtmlRenderOptions -> IO ()
 
 foreign import ccall "html.h sdhtml_smartypants"
-    c_sdhtml_smartypants :: Ptr Buffer -> CString -> CSize -> IO ()
+    sdhtml_smartypants :: Ptr Buffer -> CString -> CSize -> IO ()

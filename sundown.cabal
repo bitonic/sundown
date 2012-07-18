@@ -28,13 +28,12 @@ Library
     Extensions:       ForeignFunctionInterface, EmptyDataDecls
 
     Exposed-Modules:  Text.Sundown,
-                      Text.Sundown.Markdown,
                       Text.Sundown.Renderers.Html
 
     Other-Modules:    Text.Sundown.Buffer.Foreign,
                       Text.Sundown.Renderers.Html.Foreign,
                       Text.Sundown.Flag,
-                      Text.Sundown.Markdown.Foreign
+                      Text.Sundown.Foreign
 
     C-Sources:        cbits/autolink.c, cbits/buffer.c,
                       cbits/houdini_href_e.c, cbits/houdini_html_e.c,

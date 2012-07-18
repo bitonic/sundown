@@ -18,12 +18,18 @@ Example usage:
 >   putStrLn $ UTF8.toString $ renderHtml input allExtensions noHtmlModes Nothing
 
 -}
-
 module Text.Sundown
-    ( module Text.Sundown.Markdown
+    ( Extensions (..)
+    , allExtensions
+    , noExtensions
     ) where
 
-import Text.Sundown.Markdown
+import Text.Sundown.Foreign
 
+-- | All 'Extensions' disabled
+noExtensions :: Extensions
+noExtensions = Extensions False False False False False False False False
 
-
+-- | All 'Extensions' enabled
+allExtensions :: Extensions
+allExtensions = Extensions True True True True True True True True

@@ -50,7 +50,7 @@ renderHtml input exts mode maxNestingM =
         let maxNesting = fromIntegral $ fromMaybe defaultMaxNesting maxNestingM
         markdown <- sd_markdown_new exts maxNesting callbacks (castPtr options)
 
-        Buffer {bufData = cs, bufSize = size} <- peek ib
+        Buffer {buf_data = cs, buf_size = size} <- peek ib
         sd_markdown_render ob cs size markdown
 
         sd_markdown_free markdown
@@ -83,7 +83,7 @@ smartypants input =
 
         bufputs ib input
 
-        Buffer {bufData = cs, bufSize = size} <- peek ib
+        Buffer {buf_data = cs, buf_size = size} <- peek ib
         sdhtml_smartypants ob cs size
 
         output <- peek ob >>= getBufferData

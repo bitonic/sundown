@@ -18,10 +18,10 @@ import Foreign.C.Types
 #include "buffer.h"
 
 data Buffer = Buffer
-    { bufData  :: CString
-    , bufSize  :: CSize
-    , bufASize :: CSize
-    , bufUnit  :: CSize
+    { buf_data  :: CString
+    , buf_size  :: CSize
+    , buf_asize :: CSize
+    , buf_unit  :: CSize
     }
 
 instance Storable Buffer where
@@ -31,15 +31,15 @@ instance Storable Buffer where
                      s  <- (#peek struct buf, size) ptr
                      as <- (#peek struct buf, asize) ptr
                      u  <- (#peek struct buf, unit) ptr
-                     return Buffer { bufData  = d 
-                                   , bufSize  = s 
-                                   , bufASize = as 
-                                   , bufUnit  = u
+                     return Buffer { buf_data  = d 
+                                   , buf_size  = s 
+                                   , buf_asize = as 
+                                   , buf_unit  = u
                                    }
     poke _ _    = error "Buffer.poke not implemented."
 
 getBufferData :: Buffer -> IO ByteString
-getBufferData Buffer {bufData = d, bufSize = s}
+getBufferData Buffer {buf_data = d, buf_size = s}
     | d == nullPtr = return $ BS.pack [0]
     | otherwise    = BS.packCStringLen (d, fromIntegral s)
 

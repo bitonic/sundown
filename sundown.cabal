@@ -35,12 +35,12 @@ Library
                       Text.Sundown.Flag,
                       Text.Sundown.Foreign
 
-    C-Sources:        cbits/autolink.c, cbits/buffer.c,
-                      cbits/houdini_href_e.c, cbits/houdini_html_e.c,
-                      cbits/html.c, cbits/html_smartypants.c,
-                      cbits/markdown.c, cbits/stack.c
+    C-Sources:        sundown-c/autolink.c, sundown-c/buffer.c,
+                      sundown-c/houdini_href_e.c, sundown-c/houdini_html_e.c,
+                      sundown-c/html.c, sundown-c/html_smartypants.c,
+                      sundown-c/markdown.c, sundown-c/stack.c
 
-    Include-Dirs:     cbits
+    Include-Dirs:     sundown-c
 
     Includes:         autolink.h, buffer.h, html.h, html_blocks.h, markdown.h,
                       stack.h

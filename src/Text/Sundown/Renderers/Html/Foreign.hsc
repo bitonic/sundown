@@ -58,7 +58,7 @@ sdhtml_renderer rndr options mode = sdhtml_renderer' rndr options (toCUInt mode)
 foreign import ccall "html.h sdhtml_renderer"
     sdhtml_renderer' :: Ptr Callbacks -> Ptr HtmlRenderOptions -> CUInt -> IO ()
 
-foreign import ccall "html.h sdhtml_torenderer"
+foreign import ccall "html.h sdhtml_toc_renderer"
     sdhtml_torenderer :: Ptr Callbacks -> Ptr HtmlRenderOptions -> IO ()
 
 foreign import ccall "html.h sdhtml_smartypants"

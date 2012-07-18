@@ -8,40 +8,43 @@ License:            PublicDomain
 Build-Type:         Simple
 Category:           Foreign binding, Text
 Synopsis:           Bindings to the sundown markdown library
-Tested-With:        GHC==7.4.1, GHC==7.2.2, GHC==7.0.4, GHC==6.12.3
+Tested-With:        GHC==7.4.2, GHC==7.2.2, GHC==7.0.4, GHC==6.12.3
 Homepage:           https://github.com/bitonic/sundown
 Bug-Reports:        https://github.com/bitonic/sundown/issues
 Description:
-  Bindings to GitHub's C markdown library: <https://github.com/tanoku/sundown>
+    Bindings to GitHub's C markdown library: <https://github.com/tanoku/sundown>.
+
+    The Haskell code is in the public domain. For sundown's license, refer to
+    its GitHub page.
 
 source-repository head
-  type:     git
-  location: git://github.com/bitonic/sundown.git
+    type:     git
+    location: git://github.com/bitonic/sundown.git
 
 Library
-  Hs-Source-Dirs:   src
-  Build-Depends:    base >= 3 && < 5, bytestring
-  GHC-Options:      -Wall -O2 -fno-cse
-  Extensions:       ForeignFunctionInterface, EmptyDataDecls
+    Hs-Source-Dirs:   src
+    Build-Depends:    base >= 3 && < 5, bytestring
+    GHC-Options:      -Wall -O2 -fno-cse
+    Extensions:       ForeignFunctionInterface, EmptyDataDecls
 
-  Exposed-Modules:  Text.Sundown,
-                    Text.Sundown.Markdown,
-                    Text.Sundown.Renderers.Html
+    Exposed-Modules:  Text.Sundown,
+                      Text.Sundown.Markdown,
+                      Text.Sundown.Renderers.Html
 
-  Other-Modules:    Text.Sundown.Buffer.Foreign,
-                    Text.Sundown.Renderers.Html.Foreign,
-                    Text.Sundown.Flag,
-                    Text.Sundown.Markdown.Foreign
+    Other-Modules:    Text.Sundown.Buffer.Foreign,
+                      Text.Sundown.Renderers.Html.Foreign,
+                      Text.Sundown.Flag,
+                      Text.Sundown.Markdown.Foreign
 
-  C-Sources:        cbits/autolink.c, cbits/buffer.c,
-                    cbits/houdini_href_e.c, cbits/houdini_html_e.c,
-                    cbits/html.c, cbits/html_smartypants.c,
-                    cbits/markdown.c, cbits/stack.c
+    C-Sources:        cbits/autolink.c, cbits/buffer.c,
+                      cbits/houdini_href_e.c, cbits/houdini_html_e.c,
+                      cbits/html.c, cbits/html_smartypants.c,
+                      cbits/markdown.c, cbits/stack.c
 
-  Include-Dirs:     cbits
+    Include-Dirs:     cbits
 
-  Includes:         autolink.h, buffer.h, html.h, html_blocks.h, markdown.h,
-                    stack.h
+    Includes:         autolink.h, buffer.h, html.h, html_blocks.h, markdown.h,
+                      stack.h
 
-  Install-includes: autolink.h, buffer.h, houdini.h, html.h, html_blocks.h,
-                    markdown.h, stack.h
+    Install-includes: autolink.h, buffer.h, houdini.h, html.h, html_blocks.h,
+                      markdown.h, stack.h

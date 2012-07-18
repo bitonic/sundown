@@ -1,8 +1,8 @@
 module Text.Sundown.Markdown
-       ( Extensions (..)
-       , allExtensions
-       , noExtensions
-       ) where
+    ( Extensions (..)
+    , allExtensions
+    , noExtensions
+    ) where
 
 import Text.Sundown.Markdown.Foreign
 

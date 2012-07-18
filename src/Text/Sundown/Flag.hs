@@ -1,14 +1,13 @@
 module Text.Sundown.Flag
-       ( Flag (..)
-       , toCUInt
-       ) where
+    ( Flag (..)
+    , toCUInt
+    ) where
 
-import Foreign.C.Types
 import Data.Bits
+import Foreign.C.Types
 
 class Flag a where
-  flagIndexes :: a -> [(CUInt, Bool)]
+   flagIndexes :: a -> [(CUInt, Bool)]
 
 toCUInt :: Flag a => a -> CUInt
-toCUInt flag = foldl (\uint (f, b) -> (if b then f else 0) .|. uint)
-                     0 (flagIndexes flag)
+toCUInt = foldr (\(f, b) -> ((if b then f else 0) .|.)) 0 . flagIndexes

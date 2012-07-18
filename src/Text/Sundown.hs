@@ -1,7 +1,7 @@
 {-|
 
-Bindings to the github fork of the sundown library - previously known as upskirt:
-<https://github.com/tanoku/sundown>
+Bindings to the github fork of the sundown library - previously known as
+upskirt: <https://github.com/tanoku/sundown>
 
 Example usage:
 
@@ -20,8 +20,8 @@ Example usage:
 -}
 
 module Text.Sundown
-       ( module Text.Sundown.Markdown
-       ) where
+    ( module Text.Sundown.Markdown
+    ) where
 
 import Text.Sundown.Markdown
 

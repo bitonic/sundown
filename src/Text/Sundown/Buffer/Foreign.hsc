@@ -1,5 +1,4 @@
 {-# Language ForeignFunctionInterface #-}
-
 module Text.Sundown.Buffer.Foreign
     ( Buffer (..)
     , getBufferData
@@ -9,6 +8,7 @@ module Text.Sundown.Buffer.Foreign
     , bufrelease
     ) where
 
+import Control.Applicative
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import Foreign
@@ -25,17 +25,12 @@ data Buffer = Buffer
     }
 
 instance Storable Buffer where
-    sizeOf _    = (#size struct buf)
+    sizeOf _    = #{size struct buf}
     alignment _ = alignment (undefined :: CInt)
-    peek ptr    = do d  <- (#peek struct buf, data) ptr
-                     s  <- (#peek struct buf, size) ptr
-                     as <- (#peek struct buf, asize) ptr
-                     u  <- (#peek struct buf, unit) ptr
-                     return Buffer { buf_data  = d 
-                                   , buf_size  = s 
-                                   , buf_asize = as 
-                                   , buf_unit  = u
-                                   }
+    peek ptr    = Buffer <$> #{peek struct buf, data} ptr
+                         <*> #{peek struct buf, size} ptr
+                         <*> #{peek struct buf, asize} ptr
+                         <*> #{peek struct buf, unit} ptr
     poke _ _    = error "Buffer.poke not implemented."
 
 getBufferData :: Buffer -> IO ByteString

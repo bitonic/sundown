@@ -1,6 +1,6 @@
 Cabal-version:      >= 1.6
 Name:               sundown
-Version:            0.4.2
+Version:            0.5
 Author:             Francesco Mazzoli (f@mazzo.li)
 Maintainer:         Francesco Mazzoli (f@mazzo.li)
 Build-Type:         Simple
@@ -23,15 +23,17 @@ source-repository head
 
 Library
     Hs-Source-Dirs:   src
-    Build-Depends:    base >= 3 && < 5, bytestring
+    Build-Depends:    base >= 3 && < 5, bytestring, utf8-string, text
     GHC-Options:      -Wall -O2 -fno-cse
     Extensions:       ForeignFunctionInterface, EmptyDataDecls
 
     Exposed-Modules:  Text.Sundown,
-                      Text.Sundown.Renderers.Html
+                      Text.Sundown.Html.ByteString,
+                      Text.Sundown.Html.String,
+                      Text.Sundown.Html.Text
 
     Other-Modules:    Text.Sundown.Buffer.Foreign,
-                      Text.Sundown.Renderers.Html.Foreign,
+                      Text.Sundown.Html.Foreign,
                       Text.Sundown.Flag,
                       Text.Sundown.Foreign
 

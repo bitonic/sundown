@@ -5,5 +5,5 @@ import System.Environment (getArgs)
 
 main :: IO ()
 main = do
-  input <- liftM (!! 0) getArgs >>= readFile
-  putStrLn $ renderHtml input allExtensions noHtmlModes Nothing
+    input <- liftM (!! 0) getArgs >>= readFile
+    putStrLn $ renderHtml input allExtensions noHtmlModes True Nothing

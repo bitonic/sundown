@@ -3,8 +3,6 @@ module Text.Sundown.Buffer.Foreign
     ( Buffer (..)
     , getBufferData
     , bufnew
-    , bufputs
-    , bufgrow
     , bufrelease
     ) where
 
@@ -40,14 +38,6 @@ getBufferData Buffer {buf_data = d, buf_size = s}
 
 foreign import ccall "buffer.h bufnew"
     bufnew :: CSize -> IO (Ptr Buffer)
-
-bufputs :: Ptr Buffer -> ByteString -> IO ()
-bufputs buf bs = BS.useAsCString bs $ bufputs' buf
-foreign import ccall "buffer.h bufputs"
-    bufputs' :: Ptr Buffer -> CString -> IO ()
-
-foreign import ccall "buffer.h bufgrow"
-    bufgrow :: Ptr Buffer -> CSize -> IO CInt
 
 foreign import ccall "buffer.h bufrelease"
     bufrelease :: Ptr Buffer -> IO ()

@@ -19,14 +19,14 @@ module Text.Sundown.Html.ByteString
        , noExtensions
        ) where
 
+import Data.Maybe (fromMaybe)
 import Foreign.Marshal
 import Foreign.Ptr
 import Foreign.Storable
 import System.IO.Unsafe
 
 import Data.ByteString (ByteString)
-import qualified Data.ByteString as BS
-import Data.Maybe (fromMaybe)
+import qualified Data.ByteString.Unsafe as BS
 
 import Text.Sundown
 import Text.Sundown.Buffer.Foreign
@@ -41,38 +41,31 @@ defaultMaxNesting = 16
 renderHtml :: ByteString
            -> Extensions
            -> HtmlRenderMode
+           -> Bool              -- ^ If true, smartypants the output
            -> Maybe Int
            -- ^ The maximum nesting of the HTML. If Nothing, a default value
            -- (16) will be used.
            -> ByteString
-renderHtml input exts mode maxNestingM =
+renderHtml input exts mode sp maxNestingM =
     unsafePerformIO $
     alloca $ \callbacks ->
-    alloca $ \options -> do
-        -- Allocate buffers
+    alloca $ \options ->
+    BS.unsafeUseAsCStringLen input $ \(ptr, len) -> do
         ob <- bufnew 64
-        ib <- bufnew . fromIntegral . BS.length $ input
-
-        -- Put the input content into the buffer
-        bufputs ib input
-
-        -- Do the markdown
         sdhtml_renderer callbacks options mode
-
         let maxNesting = fromIntegral $ fromMaybe defaultMaxNesting maxNestingM
         markdown <- sd_markdown_new exts maxNesting callbacks (castPtr options)
-
-        Buffer {buf_data = cs, buf_size = size} <- peek ib
-        sd_markdown_render ob cs size markdown
-
+        sd_markdown_render ob ptr (fromIntegral len) markdown
         sd_markdown_free markdown
-
-        -- Get the result
-        output <- peek ob >>= getBufferData
-
-        bufrelease ib
-        bufrelease ob
-
+        res <- if sp then
+                   do ob' <- bufnew 64
+                      Buffer {buf_data = optr, buf_size = olen} <- peek ob
+                      sdhtml_smartypants ob' optr olen
+                      bufrelease ob
+                      return ob'
+               else return ob
+        output <- peek res >>= getBufferData
+        bufrelease res
         return output
 
 -- | All the 'HtmlRenderMode' disabled
@@ -89,18 +82,10 @@ allHtmlModes = HtmlRenderMode True True True True True True True True True True
 {-# NOINLINE smartypants #-}
 smartypants :: ByteString -> ByteString
 smartypants input =
-    unsafePerformIO $ do
+    unsafePerformIO $
+    BS.unsafeUseAsCStringLen input $ \(ptr, len) -> do
         ob <- bufnew 64
-        ib <- bufnew $ fromInteger . toInteger $ BS.length input
-
-        bufputs ib input
-
-        Buffer {buf_data = cs, buf_size = size} <- peek ib
-        sdhtml_smartypants ob cs size
-
+        sdhtml_smartypants ob ptr (fromIntegral len)
         output <- peek ob >>= getBufferData
-
-        bufrelease ib
         bufrelease ob
-
         return output

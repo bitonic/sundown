@@ -22,11 +22,14 @@ import qualified Text.Sundown.Html.ByteString as SundownBS
 renderHtml :: Text
            -> Extensions
            -> HtmlRenderMode
+           -> Bool              -- ^ If true, smartypants the output           
+           -> Maybe Int
            -- ^ The maximum nesting of the HTML. If Nothing, a default value
            -- (16) will be used.
-           -> Maybe Int -> Text
-renderHtml input exts mode maxNestingM = 
-    decodeUtf8 $ SundownBS.renderHtml (encodeUtf8 input) exts mode maxNestingM
+           -> Text
+renderHtml input exts mode sp maxNestingM = 
+    decodeUtf8 $ SundownBS.renderHtml (encodeUtf8 input) exts mode sp
+                                      maxNestingM
 
 -- | Converts punctuation in Html entities,
 -- <http://daringfireball.net/projects/smartypants/>

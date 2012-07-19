@@ -5,6 +5,8 @@ module Text.Sundown.Foreign
     , mkda_normal
     , mkda_email
     , Extensions (..)
+    , noExtensions
+    , allExtensions
     , Callbacks (..)      
     , sd_markdown_new
     , sd_markdown_render
@@ -45,6 +47,14 @@ data Extensions = Extensions
     -- ^ Allow blocks inside of paragraphs, instead requireing tags to be on
     --   separate lines
     }
+
+-- | All 'Extensions' disabled
+noExtensions :: Extensions
+noExtensions = Extensions False False False False False False False False
+
+-- | All 'Extensions' enabled
+allExtensions :: Extensions
+allExtensions = Extensions True True True True True True True True
 
 instance Flag Extensions where
     flagIndexes exts =

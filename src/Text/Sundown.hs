@@ -3,11 +3,17 @@
 Bindings to the github fork of the sundown library - previously known as
 upskirt: <https://github.com/tanoku/sundown>
 
-To actually get output, you have to use one of the @Text.Sundown.Html@ modules.
+To actually get output, you have to use one of the @Text.Sundown.Html@ modules:
+
+    * "Text.Sundown.Html.String"
+
+    * "Text.Sundown.Html.Text"
+
+    * "Text.Sundown.Html.ByteString"
 
 Example usage:
 
-> import Text.Sundown.Renderers.Html
+> import Text.Sundown.Renderers.Html.String
 > import System (getArgs)
 > import Control.Monad (liftM)
 >
@@ -18,17 +24,10 @@ Example usage:
 
 -}
 module Text.Sundown
-    ( Extensions (..)
-    , allExtensions
-    , noExtensions
-    ) where
+     ( -- * Markdown extensions
+       Extensions (..)
+     , noExtensions
+     , allExtensions
+     ) where
 
 import Text.Sundown.Foreign
-
--- | All 'Extensions' disabled
-noExtensions :: Extensions
-noExtensions = Extensions False False False False False False False False
-
--- | All 'Extensions' enabled
-allExtensions :: Extensions
-allExtensions = Extensions True True True True True True True True

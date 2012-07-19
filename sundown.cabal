@@ -13,7 +13,7 @@ Homepage:           https://github.com/bitonic/sundown
 Bug-Reports:        https://github.com/bitonic/sundown/issues
 Description:
     Bindings to GitHub's C markdown library: <https://github.com/tanoku/sundown>.
-
+    . 
     The Haskell code is in the public domain. For sundown's license, refer to
     its GitHub page.
 

@@ -8,16 +8,17 @@ If you really want to use 'ByteString's directly, make sure that they are UTF-8.
 
 -}
 module Text.Sundown.Html.ByteString
-       ( renderHtml
-       , noHtmlModes
-       , allHtmlModes
-       , smartypants
-       , HtmlRenderMode (..)
-         -- * Convenient re-exports
-       , Extensions (..)
-       , allExtensions
-       , noExtensions
-       ) where
+    ( renderHtml
+    , smartypants
+      -- * Markdown extensions         
+    , Extensions (..)
+    , allExtensions
+    , noExtensions
+      -- * Html render modes         
+    , HtmlRenderMode (..)
+    , noHtmlModes
+    , allHtmlModes
+    ) where
 
 import Data.Maybe (fromMaybe)
 import Foreign.Marshal
@@ -28,7 +29,6 @@ import System.IO.Unsafe
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Unsafe as BS
 
-import Text.Sundown
 import Text.Sundown.Buffer.Foreign
 import Text.Sundown.Foreign
 import Text.Sundown.Html.Foreign
@@ -41,7 +41,7 @@ defaultMaxNesting = 16
 renderHtml :: ByteString
            -> Extensions
            -> HtmlRenderMode
-           -> Bool              -- ^ If true, smartypants the output
+           -> Bool              -- ^ If true, smartypant the output
            -> Maybe Int
            -- ^ The maximum nesting of the HTML. If Nothing, a default value
            -- (16) will be used.

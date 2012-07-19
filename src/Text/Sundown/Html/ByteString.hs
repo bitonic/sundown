@@ -1,8 +1,9 @@
 {-# Language ForeignFunctionInterface #-}
 {-|
 
-Warning: you should not need to use this module - use the @Text@ or @String@
-module so that you won't have to worry about text encoding.
+Warning: you should not need to use this module, if you're storing your text
+sanely. Use "Text.Sundown.Html.String" or "Text.Sundown.Html.Text" so that you
+won't have to worry about text encoding.
 
 If you really want to use 'ByteString's directly, make sure that they are UTF-8.
 
@@ -37,7 +38,6 @@ defaultMaxNesting :: Int
 defaultMaxNesting = 16
 
 -- | Parses a 'ByteString' containing the markdown, returns the Html code.
-{-# NOINLINE renderHtml #-}
 renderHtml :: ByteString
            -> Extensions
            -> HtmlRenderMode
@@ -46,6 +46,7 @@ renderHtml :: ByteString
            -- ^ The maximum nesting of the HTML. If Nothing, a default value
            -- (16) will be used.
            -> ByteString
+{-# NOINLINE renderHtml #-}
 renderHtml input exts mode sp maxNestingM =
     unsafePerformIO $
     alloca $ \callbacks ->
@@ -79,8 +80,8 @@ allHtmlModes = HtmlRenderMode True True True True True True True True True True
 
 -- | Converts punctuation in Html entities,
 -- <http://daringfireball.net/projects/smartypants/>
-{-# NOINLINE smartypants #-}
 smartypants :: ByteString -> ByteString
+{-# NOINLINE smartypants #-}
 smartypants input =
     unsafePerformIO $
     BS.unsafeUseAsCStringLen input $ \(ptr, len) -> do

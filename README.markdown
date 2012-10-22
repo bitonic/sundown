@@ -1,4 +1,4 @@
-[Sundown](https://github.com/tanoku/sundown) bindings for haskell.
+[Sundown](https://github.com/vmg/sundown) bindings for haskell.
 
 The haskell code is in the public domain, for the sundown license see
 the files in cbits/.

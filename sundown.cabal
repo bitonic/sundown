@@ -12,7 +12,7 @@ Tested-With:        GHC==7.4.2, GHC==7.2.2, GHC==7.0.4, GHC==6.12.3
 Homepage:           https://github.com/bitonic/sundown
 Bug-Reports:        https://github.com/bitonic/sundown/issues
 Description:
-    Bindings to GitHub's C markdown library: <https://github.com/tanoku/sundown>.
+    Bindings to GitHub's C markdown library: <https://github.com/vmg/sundown>.
     . 
     The Haskell code is in the public domain. For sundown's license, refer to
     its GitHub page.

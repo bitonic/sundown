@@ -1,3 +1,4 @@
+{-# Language EmptyDataDecls #-}
 {-# Language ForeignFunctionInterface #-}
 module Text.Sundown.Foreign
     ( Extensions (..)

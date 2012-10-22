@@ -1,3 +1,4 @@
+{-# Language EmptyDataDecls #-}
 {-# Language ForeignFunctionInterface #-}
 module Text.Sundown.Html.Foreign
     ( HtmlRenderMode (..)

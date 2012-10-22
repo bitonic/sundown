@@ -28,7 +28,7 @@ Library
                       utf8-string >= 0.3,
                       text
     GHC-Options:      -Wall -O2 -fno-cse
-    Extensions:       ForeignFunctionInterface
+    Extensions:       EmptyDataDecls, ForeignFunctionInterface
 
     Exposed-Modules:  Text.Sundown,
                       Text.Sundown.Html.ByteString,

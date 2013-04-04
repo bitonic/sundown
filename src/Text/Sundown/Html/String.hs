@@ -11,27 +11,21 @@ module Text.Sundown.Html.String
     , allHtmlModes
     ) where
 
-import qualified Data.ByteString.UTF8 as BS
-
-import Text.Sundown.Html.ByteString
-    (noHtmlModes, allHtmlModes, HtmlRenderMode(..))
-import qualified Text.Sundown.Html.ByteString as SundownBS
-import Text.Sundown.Foreign
+import Text.Sundown.Html hiding (renderHtml, smartypants)
+import qualified Text.Sundown.Html as Sundown
 
 -- | Parses a 'ByteString' containing the markdown, returns the Html code.
 renderHtml :: String
            -> Extensions
            -> HtmlRenderMode
-           -> Bool              -- ^ If true, smartypant the output           
+           -> Bool              -- ^ If true, smartypant the output
            -> Maybe Int
            -- ^ The maximum nesting of the HTML. If Nothing, a default value
            -- (16) will be used.
            -> String
-renderHtml input exts mode sp maxNestingM = 
-    BS.toString $ SundownBS.renderHtml (BS.fromString input) exts mode
-                                       sp maxNestingM
+renderHtml = Sundown.renderHtml
 
 -- | Converts punctuation in Html entities,
 -- <http://daringfireball.net/projects/smartypants/>
 smartypants :: String -> String
-smartypants = BS.toString . SundownBS.smartypants . BS.fromString
+smartypants = Sundown.smartypants

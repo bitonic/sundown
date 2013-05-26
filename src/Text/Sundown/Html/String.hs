@@ -14,7 +14,7 @@ module Text.Sundown.Html.String
 import Text.Sundown.Html hiding (renderHtml, smartypants)
 import qualified Text.Sundown.Html as Sundown
 
--- | Parses a 'ByteString' containing the markdown, returns the Html code.
+-- | Parses a 'String' containing the markdown, returns the Html code.
 renderHtml :: String
            -> Extensions
            -> HtmlRenderMode

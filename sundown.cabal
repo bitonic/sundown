@@ -1,6 +1,6 @@
 Cabal-version:      >= 1.6
 Name:               sundown
-Version:            0.5.1
+Version:            0.5.2
 Author:             Francesco Mazzoli (f@mazzo.li)
 Maintainer:         Francesco Mazzoli (f@mazzo.li)
 Build-Type:         Simple
@@ -31,6 +31,7 @@ Library
     Extensions:       EmptyDataDecls, ForeignFunctionInterface
 
     Exposed-Modules:  Text.Sundown,
+                      Text.Sundown.Html,
                       Text.Sundown.Html.ByteString,
                       Text.Sundown.Html.String,
                       Text.Sundown.Html.Text

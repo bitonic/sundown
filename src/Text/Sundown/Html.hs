@@ -20,12 +20,12 @@ module Text.Sundown.Html
     ) where
 
 import Data.ByteString (ByteString)
-import qualified Data.ByteString.UTF8 as BS
 import Data.Text (Text)
+import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 
 import Text.Sundown.Foreign
-import Text.Sundown.Html.ByteString (noHtmlModes, allHtmlModes, HtmlRenderMode(..))
+import Text.Sundown.Html.ByteString (noHtmlModes, allHtmlModes)
 import qualified Text.Sundown.Html.ByteString as BS
 import Text.Sundown.Html.Foreign
 
@@ -37,8 +37,8 @@ class FromBS a where fromBS :: ByteString -> a
 instance ToBS   ByteString where toBS   = id
 instance FromBS ByteString where fromBS = id
 
-instance ToBS   [Char]     where toBS   = BS.fromString
-instance FromBS [Char]     where fromBS = BS.toString
+instance ToBS   [Char]     where toBS   = T.encodeUtf8 . T.pack
+instance FromBS [Char]     where fromBS = T.unpack . T.decodeUtf8
 
 instance ToBS   Text       where toBS   = T.encodeUtf8
 instance FromBS Text       where fromBS = T.decodeUtf8

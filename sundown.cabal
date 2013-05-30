@@ -25,7 +25,6 @@ Library
     Hs-Source-Dirs:   src
     Build-Depends:    base >= 3 && < 5,
                       bytestring,
-                      utf8-string >= 0.3,
                       text
     GHC-Options:      -Wall -O2 -fno-cse
     Extensions:       EmptyDataDecls, ForeignFunctionInterface

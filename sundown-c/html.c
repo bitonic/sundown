@@ -367,16 +367,17 @@ rndr_image(struct buf *ob, const struct buf *link, const struct buf *title, cons
 
 	BUFPUTSL(ob, "<img src=\"");
 	escape_href(ob, link->data, link->size);
-	BUFPUTSL(ob, "\" alt=\"");
-
-	if (alt && alt->size)
-		escape_html(ob, alt->data, alt->size);
 
 	if (title && title->size) {
 		BUFPUTSL(ob, "\" title=\"");
 		escape_html(ob, title->data, title->size); }
 
 	bufputs(ob, USE_XHTML(options) ? "\"/>" : "\">");
+	BUFPUTSL(ob, "<span class=\"caption\">");
+
+	if (alt && alt->size)
+		escape_html(ob, alt->data, alt->size);
+	bufputs(ob, USE_XHTML(options) ? "\"/>" : "</span>");
 	return 1;
 }
 

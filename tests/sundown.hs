@@ -6,4 +6,4 @@ import System.Environment (getArgs)
 main :: IO ()
 main = do
     input <- liftM (!! 0) getArgs >>= readFile
-    putStrLn $ renderHtml input allExtensions noHtmlModes True Nothing
+    putStrLn $ renderHtml allExtensions noHtmlModes True Nothing input

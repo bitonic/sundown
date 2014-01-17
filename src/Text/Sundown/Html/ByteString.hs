@@ -38,16 +38,16 @@ defaultMaxNesting :: Int
 defaultMaxNesting = 16
 
 -- | Parses a 'ByteString' containing the markdown, returns the Html code.
-renderHtml :: ByteString
-           -> Extensions
+renderHtml :: Extensions
            -> HtmlRenderMode
            -> Bool              -- ^ If true, smartypant the output
            -> Maybe Int
            -- ^ The maximum nesting of the HTML. If Nothing, a default value
            -- (16) will be used.
            -> ByteString
+           -> ByteString
 {-# NOINLINE renderHtml #-}
-renderHtml input exts mode sp maxNestingM =
+renderHtml exts mode sp maxNestingM input =
     unsafePerformIO $
     alloca $ \callbacks ->
     alloca $ \options ->

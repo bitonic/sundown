@@ -45,16 +45,16 @@ instance FromBS Text       where fromBS = T.decodeUtf8
 
 -- | Parses markdown, returns the Html.
 renderHtml :: (ToBS a, FromBS b)
-           => a
-           -> Extensions
+           => Extensions
            -> HtmlRenderMode
            -> Bool              -- ^ If true, smartypant the output
            -> Maybe Int
            -- ^ The maximum nesting of the HTML. If Nothing, a default value
            -- (16) will be used.
+           -> a
            -> b
-renderHtml input exts mode sp maxNestingM =
-    fromBS $ BS.renderHtml (toBS input) exts mode sp maxNestingM
+renderHtml exts mode sp maxNestingM input =
+    fromBS $ BS.renderHtml exts mode sp maxNestingM $ toBS input
 
 smartypants :: (ToBS a, FromBS b) => a -> b
 smartypants = fromBS . BS.smartypants . toBS

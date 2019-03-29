@@ -3,7 +3,6 @@ Name:               sundown
 Version:            0.6
 Author:             Francesco Mazzoli (f@mazzo.li)
 Maintainer:         Francesco Mazzoli (f@mazzo.li)
-Build-Type:         Simple
 License:            PublicDomain
 Build-Type:         Simple
 Category:           Foreign binding, Text
